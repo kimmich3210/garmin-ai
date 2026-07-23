@@ -1,15 +1,20 @@
 import os
 import json
+import base64
 from datetime import date
 from garminconnect import Garmin
 
-# Log ind på Garmin
-client = Garmin(
-    os.getenv("EMAIL"),
-    os.getenv("PASSWORD"),
-    prompt_mfa=lambda: input("MFA code: "),
-)
-client.login("~/.garminconnect")
+# Hent token fra GitHub Secret eller miljøvariabel
+token_b64 = os.getenv("GARMIN_TOKEN_B64")
+if not token_b64:
+    raise ValueError("GARMIN_TOKEN_B64 mangler i miljøvariablerne!")
+
+token_json = base64.b64decode(token_b64).decode("utf-8")
+token_data = json.loads(token_json)
+
+# Log ind på Garmin via token
+client = Garmin()
+client.login(token_data)
 
 today = date.today().isoformat()
 print(f"Henter og analyserer MAF- og pulsdata for i dag ({today})...\n" + "="*50)
@@ -58,7 +63,6 @@ print(f"• Skridt i dag: {stats.get('totalSteps', 'Ikke tilgængelig')}")
 # HRV (Hovedindikator for restitution før MAF-tur)
 hrv_data = all_data.get("hrv") or {}
 if hrv_data:
-    # Prøv at finde nightly status eller 7-dages gennemsnit
     last_night_hrv = hrv_data.get('hrvSummary', {}).get('lastNightAvg', 'Ikke tilgængelig')
     print(f"• HRV (Natgennemsnit): {last_night_hrv} ms")
 else:

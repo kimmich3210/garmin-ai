@@ -1,77 +1,97 @@
-import os
-import json
-from datetime import date
+from datetime import datetime, timedelta
 from garminconnect import Garmin
+import json
+import os
 
-# Hent e-mail og adgangskode fra GitHub Secrets
-email = os.getenv("GARMIN_EMAIL")
-password = os.getenv("GARMIN_PASSWORD")
+email = "DIN_EMAIL"
+password = "DIT_PASSWORD"
 
-if not email or not password:
-    raise ValueError("FEJL: GARMIN_EMAIL eller GARMIN_PASSWORD mangler i GitHub Secrets!")
+tokenstore = os.path.expanduser("~/.garminconnect")
 
-print("Logger ind på Garmin via e-mail...")
-client = Garmin(email, password)
-client.login()
-print(" [OK] Succesfuldt logget ind!")
-
-today = date.today().isoformat()
-print(f"Henter og analyserer MAF- og pulsdata for i dag ({today})...\n" + "="*50)
-
-# Beregn MAF 180-formlen (180 - alder)
-# Fødselsdag 24. juni 2001 -> 25 år i 2026
-age = 25 
-base_maf = 180 - age
-print(f"🎯 Din teoretiske MAF-grænse (180-formel): {base_maf} slag/min\n" + "-"*50)
-
-all_data = {}
-
-def fetch_safe(name, func, *args):
+print("Logger ind på Garmin Connect...")
+try:
+    api = Garmin()
+    api.login(tokenstore)
+    print("Logget ind via gemte tokens!")
+except Exception:
+    print("Logger ind med brugernavn, adgangskode og MFA...")
     try:
-        res = func(*args)
-        print(f" [OK] {name}")
-        return res
+        api = Garmin(
+            email=email,
+            password=password,
+            prompt_mfa=lambda: input("Indtast MFA-kode fra Garmin: ").strip()
+        )
+        api.login(tokenstore)
+        print("Login succesfuldt og tokens gemt!")
     except Exception as e:
-        print(f" [X] {name} (Fejl: {e})")
-        return None
+        print(f"Fejl ved login: {e}")
+        exit()
 
-all_data["stats"] = fetch_safe("Daglige Statistikker", client.get_stats, today)
-all_data["heart_rates"] = fetch_safe("Pulsdata & Hvilepuls", client.get_heart_rates, today)
-all_data["hrv"] = fetch_safe("HRV (Restitution)", client.get_hrv_data, today)
-all_data["sleep"] = fetch_safe("Søvndata", client.get_sleep_data, today)
-all_data["training_status"] = fetch_safe("Træningsstatus", client.get_training_status, today)
-all_data["activities"] = fetch_safe("Seneste Aktiviteter", client.get_activities, 0, 3)
+days_to_fetch = 30
+print(f"Henter data og historik for de sidste {days_to_fetch} dage...")
 
-filename = f"garmin_maf_data_{today}.json"
-with open(filename, "w", encoding="utf-8") as f:
-    json.dump(all_data, f, ensure_ascii=False, indent=4)
+for i in range(days_to_fetch):
+    target_date = datetime.now() - timedelta(days=i)
+    date_str = target_date.strftime("%Y-%m-%d")
+    filename = f"garmin_maf_data_{date_str}.json"
+    
+    if os.path.exists(filename):
+        print(f"Skipper {date_str} (findes allerede)")
+        continue
 
-print("\n" + "="*50)
-print("📊 MAF & RESTITUTIONSRAPPORT")
-print("="*50)
+    print(f"Henter data for {date_str}...")
+    try:
+        stats = api.get_stats(date_str)
+    except Exception:
+        stats = {}
 
-stats = all_data.get("stats") or {}
-hr_data = all_data.get("heart_rates") or {}
-print(f"• Hvilepuls: {hr_data.get('restingHeartRate', 'Ikke tilgængelig')} slag/min")
-print(f"• Skridt i dag: {stats.get('totalSteps', 'Ikke tilgængelig')}")
+    try:
+        hr_data = api.get_heart_rates(date_str)
+    except Exception:
+        hr_data = {}
 
-hrv_data = all_data.get("hrv") or {}
-if hrv_data:
-    last_night_hrv = hrv_data.get('hrvSummary', {}).get('lastNightAvg', 'Ikke tilgængelig')
-    print(f"• HRV (Natgennemsnit): {last_night_hrv} ms")
-else:
-    print("• HRV: Ingen data fundet for i dag endnu.")
+    try:
+        hrv = api.get_hrv_data(date_str)
+    except Exception:
+        hrv = {}
 
-activities = all_data.get("activities")
-if activities and isinstance(activities, list) and len(activities) > 0:
-    print("\n🏃 Seneste træningspas:")
-    for act in activities[:3]:
-        name = act.get('activityName', 'Ukendt aktivitet')
-        duration_min = round(act.get('duration', 0) / 60, 1)
-        avg_hr = act.get('averageHR', 'N/A')
-        print(f"  - {name}: {duration_min} min | Snitpuls: {avg_hr} bpm")
-else:
-    print("\n🏃 Seneste aktiviteter: Ingen fundet for i dag.")
+    day_data = {
+        "fetched_at": date_str,
+        "stats": stats,
+        "hrv": hrv,
+        "heart_rates": hr_data,
+        "activities": []
+    }
+    
+    with open(filename, "w", encoding="utf-8") as f:
+        json.dump(day_data, f, ensure_ascii=False, indent=4)
 
-print("="*50)
-print(f"Alt data er gemt i '{filename}'")
+start_date_str = (datetime.now() - timedelta(days=days_to_fetch)).strftime("%Y-%m-%d")
+end_date_str = datetime.now().strftime("%Y-%m-%d")
+
+try:
+    print("Henter træningsaktiviteter...")
+    activities = api.get_activities_by_date(start_date_str, end_date_str)
+    
+    for act in activities:
+        act_date_str = act.get("startTimeLocal", "")[:10]
+        filename = f"garmin_maf_data_{act_date_str}.json"
+        
+        if os.path.exists(filename):
+            with open(filename, "r", encoding="utf-8") as f:
+                day_data = json.load(f)
+            
+            if "activities" not in day_data:
+                day_data["activities"] = []
+                
+            existing_ids = [a.get("activityId") for a in day_data["activities"]]
+            if act.get("activityId") not in existing_ids:
+                day_data["activities"].append(act)
+                
+            with open(filename, "w", encoding="utf-8") as f:
+                json.dump(day_data, f, ensure_ascii=False, indent=4)
+                
+    print("Alle historiske data og træninger er hentet og gemt succesfuldt!")
+
+except Exception as e:
+    print(f"Fejl ved hentning af aktiviteter: {e}")

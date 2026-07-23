@@ -3,7 +3,7 @@ import json
 import os
 from datetime import date
 
-st.set_page_title("Garmin MAF & Restitutions-Dashboard", layout="wide")
+st.set_page_config(page_title="Garmin Trænings-Dashboard", layout="wide")
 
 st.title("🏃 Garmin MAF & Restitutions-Dashboard")
 st.write("Velkommen til dit personlige overblik over dine sundheds- og træningsdata fra Garmin.")

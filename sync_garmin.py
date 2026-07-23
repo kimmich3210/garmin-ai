@@ -4,19 +4,31 @@ import base64
 from datetime import date
 from garminconnect import Garmin
 
-# Hent token fra GitHub Secret
 token_input = os.getenv("GARMIN_TOKEN_B64")
 if not token_input:
-    raise ValueError("GARMIN_TOKEN_B64 mangler i miljøvariablerne!")
+    raise ValueError("FEJL: GARMIN_TOKEN_B64 miljøvariablen er tom eller mangler!")
 
-# Prøv at dekode som Base64, ellers antag at det er rå JSON
+print(Token-længde modtaget: {len(token_input)} tegn)
+
+# Prøv at dekode hvis det er Base64, ellers brug direkte
+token_data = None
 try:
-    decoded_bytes = base64.b64decode(token_input.strip(), validate=True)
+    # Fjern eventuelle mellemrum eller linjeskift
+    cleaned_input = token_input.strip()
+    
+    # Prøv base64 dekodning først
+    decoded_bytes = base64.b64decode(cleaned_input, validate=False)
     token_json = decoded_bytes.decode("utf-8")
     token_data = json.loads(token_json)
+    print(" [OK] Token blev succesfuldt dekodet fra Base64.")
 except Exception:
-    # Hvis den ikke er base64-kodet, så brug indholdet direkte som JSON
-    token_data = json.loads(token_input)
+    try:
+        # Hvis base64 fejlede, prøv at parse direkte som JSON
+        token_data = json.loads(token_input)
+        print(" [OK] Token blev indlæst direkte som JSON.")
+    except Exception as e:
+        print(f" [X] Kunne ikke parse token. Indhold start: {token_input[:30]}...")
+        raise e
 
 # Log ind på Garmin via token
 client = Garmin()
@@ -26,7 +38,6 @@ today = date.today().isoformat()
 print(f"Henter og analyserer MAF- og pulsdata for i dag ({today})...\n" + "="*50)
 
 # 1. Beregn MAF 180-formlen (180 - alder)
-# Din fødselsdag er 24. juni 2001, så du er 25 år i 2026
 age = 25 
 base_maf = 180 - age
 print(f"🎯 Din teoretiske MAF-grænse (180-formel): {base_maf} slag/min\n" + "-"*50)
@@ -50,23 +61,19 @@ all_data["sleep"] = fetch_safe("Søvndata", client.get_sleep_data, today)
 all_data["training_status"] = fetch_safe("Træningsstatus", client.get_training_status, today)
 all_data["activities"] = fetch_safe("Seneste Aktiviteter", client.get_activities, 0, 3)
 
-# Gem data ned
 filename = f"garmin_maf_data_{today}.json"
 with open(filename, "w", encoding="utf-8") as f:
     json.dump(all_data, f, ensure_ascii=False, indent=4)
 
-# 3. Udskriv en læsevenlig MAF-rapport direkte i terminalen
 print("\n" + "="*50)
 print("📊 MAF & RESTITUTIONSRAPPORT")
 print("="*50)
 
-# Hvilepuls & Skridt
 stats = all_data.get("stats") or {}
 hr_data = all_data.get("heart_rates") or {}
 print(f"• Hvilepuls: {hr_data.get('restingHeartRate', 'Ikke tilgængelig')} slag/min")
 print(f"• Skridt i dag: {stats.get('totalSteps', 'Ikke tilgængelig')}")
 
-# HRV (Hovedindikator for restitution før MAF-tur)
 hrv_data = all_data.get("hrv") or {}
 if hrv_data:
     last_night_hrv = hrv_data.get('hrvSummary', {}).get('lastNightAvg', 'Ikke tilgængelig')
@@ -74,7 +81,6 @@ if hrv_data:
 else:
     print("• HRV: Ingen data fundet for i dag endnu.")
 
-# Seneste aktiviteter tjek
 activities = all_data.get("activities")
 if activities and isinstance(activities, list) and len(activities) > 0:
     print("\n🏃 Seneste træningspas:")

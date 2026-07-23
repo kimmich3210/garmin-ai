@@ -22,5 +22,6 @@ jobs:
 
       - name: Run Garmin Sync
         env:
-          GARMIN_TOKEN_B64: ${{ secrets.GARMIN_TOKEN_B64 }}
+          GARMIN_EMAIL: ${{ secrets.GARMIN_EMAIL }}
+          GARMIN_PASSWORD: ${{ secrets.GARMIN_PASSWORD }}
         run: python sync_garmin.py

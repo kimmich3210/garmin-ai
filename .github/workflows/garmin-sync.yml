@@ -5,6 +5,9 @@ on:
     - cron: '0 6 * * *'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   sync:
     runs-on: ubuntu-latest
@@ -26,8 +29,8 @@ jobs:
           GARMIN_PASSWORD: ${{ secrets.GARMIN_PASSWORD }}
         run: python sync_garmin.py
 
-      - name: Upload Garmin Data Artifact
-        uses: actions/upload-artifact@v4
+      - name: Commit and push Garmin Data
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          name: garmin-data
-          path: garmin_maf_data_*.json
+          commit_message: "Automatiske Garmin data opdatering"
+          file_pattern: "garmin_maf_data_*.json"

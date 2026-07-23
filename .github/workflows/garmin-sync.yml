@@ -25,3 +25,9 @@ jobs:
           GARMIN_EMAIL: ${{ secrets.GARMIN_EMAIL }}
           GARMIN_PASSWORD: ${{ secrets.GARMIN_PASSWORD }}
         run: python sync_garmin.py
+
+        - name: Upload Garmin Data Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: garmin-data
+          path: garmin_maf_data_*.json

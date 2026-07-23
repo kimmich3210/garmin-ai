@@ -1,48 +1,29 @@
 import os
 import json
-import base64
 from datetime import date
 from garminconnect import Garmin
 
-token_input = os.getenv("GARMIN_TOKEN_B64")
-if not token_input:
-    raise ValueError("FEJL: GARMIN_TOKEN_B64 miljøvariablen er tom eller mangler!")
+# Hent e-mail og adgangskode fra GitHub Secrets
+email = os.getenv("GARMIN_EMAIL")
+password = os.getenv("GARMIN_PASSWORD")
 
-# Rens for uønskede mellemrum og eventuelle anførelsestegn omkring teksten
-cleaned_input = token_input.strip()
-if (cleaned_input.startswith('"') and cleaned_input.endswith('"')) or \
-   (cleaned_input.startswith("'") and cleaned_input.endswith("'")):
-    cleaned_input = cleaned_input[1:-1]
+if not email or not password:
+    raise ValueError("FEJL: GARMIN_EMAIL eller GARMIN_PASSWORD mangler i GitHub Secrets!")
 
-print(f"Token-længde efter rensning: {len(cleaned_input)} tegn")
-
-token_data = None
-try:
-    decoded_bytes = base64.b64decode(cleaned_input, validate=False)
-    token_json = decoded_bytes.decode("utf-8")
-    token_data = json.loads(token_json)
-    print(" [OK] Token blev succesfuldt dekodet fra Base64.")
-except Exception:
-    try:
-        token_data = json.loads(cleaned_input)
-        print(" [OK] Token blev indlæst direkte som JSON.")
-    except Exception as e:
-        print(f" [X] Kunne stadig ikke parse token. Starten er: {cleaned_input[:30]}...")
-        raise e
-
-# Log ind på Garmin via token
-client = Garmin()
-client.login(token_data)
+print("Logger ind på Garmin via e-mail...")
+client = Garmin(email, password)
+client.login()
+print(" [OK] Succesfuldt logget ind!")
 
 today = date.today().isoformat()
 print(f"Henter og analyserer MAF- og pulsdata for i dag ({today})...\n" + "="*50)
 
-# 1. Beregn MAF 180-formlen (180 - alder)
+# Beregn MAF 180-formlen (180 - alder)
+# Fødselsdag 24. juni 2001 -> 25 år i 2026
 age = 25 
 base_maf = 180 - age
 print(f"🎯 Din teoretiske MAF-grænse (180-formel): {base_maf} slag/min\n" + "-"*50)
 
-# 2. Hent sundheds- og træningsdata
 all_data = {}
 
 def fetch_safe(name, func, *args):

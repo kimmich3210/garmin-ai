@@ -4,13 +4,19 @@ import base64
 from datetime import date
 from garminconnect import Garmin
 
-# Hent token fra GitHub Secret eller miljøvariabel
-token_b64 = os.getenv("GARMIN_TOKEN_B64")
-if not token_b64:
+# Hent token fra GitHub Secret
+token_input = os.getenv("GARMIN_TOKEN_B64")
+if not token_input:
     raise ValueError("GARMIN_TOKEN_B64 mangler i miljøvariablerne!")
 
-token_json = base64.b64decode(token_b64).decode("utf-8")
-token_data = json.loads(token_json)
+# Prøv at dekode som Base64, ellers antag at det er rå JSON
+try:
+    decoded_bytes = base64.b64decode(token_input.strip(), validate=True)
+    token_json = decoded_bytes.decode("utf-8")
+    token_data = json.loads(token_json)
+except Exception:
+    # Hvis den ikke er base64-kodet, så brug indholdet direkte som JSON
+    token_data = json.loads(token_input)
 
 # Log ind på Garmin via token
 client = Garmin()

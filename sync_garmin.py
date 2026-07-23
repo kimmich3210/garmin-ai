@@ -8,22 +8,18 @@ token_input = os.getenv("GARMIN_TOKEN_B64")
 if not token_input:
     raise ValueError("FEJL: GARMIN_TOKEN_B64 miljøvariablen er tom eller mangler!")
 
-print(Token-længde modtaget: {len(token_input)} tegn)
+print(f"Token-længde modtaget: {len(token_input)} tegn")
 
 # Prøv at dekode hvis det er Base64, ellers brug direkte
 token_data = None
 try:
-    # Fjern eventuelle mellemrum eller linjeskift
     cleaned_input = token_input.strip()
-    
-    # Prøv base64 dekodning først
     decoded_bytes = base64.b64decode(cleaned_input, validate=False)
     token_json = decoded_bytes.decode("utf-8")
     token_data = json.loads(token_json)
     print(" [OK] Token blev succesfuldt dekodet fra Base64.")
 except Exception:
     try:
-        # Hvis base64 fejlede, prøv at parse direkte som JSON
         token_data = json.loads(token_input)
         print(" [OK] Token blev indlæst direkte som JSON.")
     except Exception as e:

@@ -285,28 +285,18 @@ else:
             )
             st.plotly_chart(fig_hr, use_container_width=True, config={"scrollZoom": False, "displayModeBar": False})
 
-            # AUTOMATISK PULS-FEEDBACK: TILPASSER SIG DEN VALGTE PERIODE OG GRAF-DATA
-            if len(df_filtered) >= 1:
-                latest_act = df_filtered.iloc[-1]
-                latest_hr = latest_act["Gennemsnitspuls"]
-                latest_date = latest_act["DatoStr"]
+            # SIMPEL PULS-FEEDBACK (STIGENDE / FALDENDE)
+            if len(df_filtered) >= 2:
+                mid_idx = len(df_filtered) // 2
+                first_hr = df_filtered.iloc[:mid_idx]["Gennemsnitspuls"].mean()
+                last_hr = df_filtered.iloc[mid_idx]["Gennemsnitspuls"].mean() if len(df_filtered) > 2 else df_filtered.iloc[-1]["Gennemsnitspuls"]
                 
-                seven_days_ago = datetime.now() - timedelta(days=7)
-                df_7days = df_filtered[(df_filtered["Dato"] >= seven_days_ago) & (df_filtered["DatoStr"] != latest_date)]
-                
-                if not df_7days.empty:
-                    avg_7days_hr = df_7days["Gennemsnitspuls"].mean()
-                    if latest_hr < avg_7days_hr:
-                        st.success(f"🎯 **Puls-feedback ({time_filter} - Seneste tur {latest_date}):** Din gennemsnitspuls var {latest_hr} bpm, hvilket er **lavere** end gennemsnittet for de sidste 7 dage ({int(avg_7days_hr)} bpm). Rigtig god kontrol i zonen!")
-                    elif latest_hr > avg_7days_hr + 2:
-                        st.warning(f"🎯 **Puls-feedback ({time_filter} - Seneste tur {latest_date}):** Din gennemsnitspuls var {latest_hr} bpm, hvilket er **højere** end gennemsnittet for de sidste 7 dage ({int(avg_7days_hr)} bpm). Du har ligget højt i intensitet på denne tur.")
-                    else:
-                        st.info(f"🎯 **Puls-feedback ({time_filter} - Seneste tur {latest_date}):** Din gennemsnitspuls på {latest_hr} bpm matcher fint gennemsnittet for dine seneste 7 dages træning.")
+                if last_hr < first_hr:
+                    st.success("📉 **Puls:** Faldende (Godt)")
+                elif last_hr > first_hr:
+                    st.warning("📈 **Puls:** Stigende")
                 else:
-                    if latest_hr <= base_maf:
-                        st.success(f"🎯 **Puls-feedback ({time_filter}):** Seneste tur ({latest_date}) lå på {latest_hr} bpm, hvilket er pænt under MAF-grænsen på {base_maf} bpm.")
-                    else:
-                        st.warning(f"🎯 **Puls-feedback ({time_filter}):** Seneste tur ({latest_date}) lå på {latest_hr} bpm, hvilket er over MAF-grænsen ({base_maf} bpm).")
+                    st.info("➡️ **Puls:** Stabil")
 
             # --- GRAF 2: PACE ---
             st.subheader("⚡ Pace (min/km)")
@@ -335,27 +325,18 @@ else:
             
             st.plotly_chart(fig_pace, use_container_width=True, config={"scrollZoom": False, "displayModeBar": False})
 
-            # AUTOMATISK PACE-FEEDBACK: TILPASSER SIG DEN VALGTE PERIODE OG GRAF-DATA
-            if len(df_filtered) >= 1:
-                latest_act = df_filtered.iloc[-1]
-                latest_sort = latest_act["_PaceSort"]
-                latest_pace_str = latest_act["Pace"]
-                latest_date = latest_act["DatoStr"]
+            # SIMPEL PACE-FEEDBACK (STIGENDE / FALDENDE)
+            if len(df_filtered) >= 2:
+                start_pace = df_filtered.iloc[0]["_PaceSort"]
+                end_pace = df_filtered.iloc[-1]["_PaceSort"]
                 
-                seven_days_ago = datetime.now() - timedelta(days=7)
-                df_7days = df_filtered[(df_filtered["Dato"] >= seven_days_ago) & (df_filtered["DatoStr"] != latest_date)]
-                
-                if not df_7days.empty:
-                    avg_7days_sort = df_7days["_PaceSort"].mean()
-                    # Husk: Lavere sort-værdi = hurtigere pace
-                    if latest_sort < avg_7days_sort:
-                        st.success(f"🚀 **Pace-feedback ({time_filter} - Seneste tur {latest_date}):** Din pace var {latest_pace_str} min/km, hvilket er **hurtigere** end gennemsnittet for de sidste 7 dage i denne periode. Stærkt løbet!")
-                    elif latest_sort > avg_7days_sort + 0.1:
-                        st.warning(f"🐢 **Pace-feedback ({time_filter} - Seneste tur {latest_date}):** Din pace var {latest_pace_str} min/km, hvilket er lidt langsommere end gennemsnittet for de sidste 7 dage.")
-                    else:
-                        st.info(f"➡️ **Pace-feedback ({time_filter} - Seneste tur {latest_date}):** Din pace på {latest_pace_str} min/km ligger stabilt i forhold til de sidste 7 dage.")
+                # Bemærk: I min/km betyder lavere tal hurtigere pace (faldende graf-linje mod bunden)
+                if end_pace < start_pace:
+                    st.success("📈 **Pace:** Stigende i tempo (Faldende min/km - Du er blevet hurtigere!)")
+                elif end_pace > start_pace:
+                    st.warning("📉 **Pace:** Faldende i tempo (Stigende min/km)")
                 else:
-                    st.info(f"➡️ **Pace-feedback ({time_filter}):** Seneste tur ({latest_date}) havde en pace på {latest_pace_str} min/km.")
+                    st.info("➡️ **Pace:** Stabil")
             
             st.subheader("📋 Aktivitetsdetaljer (Løb)")
             display_df = df_filtered.drop(columns=["Dato", "_PaceSort"]).rename(columns={"DatoStr": "Dato"})

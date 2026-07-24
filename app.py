@@ -45,14 +45,80 @@ else:
         except Exception:
             pass
 
-    # --- TOP: SIMPEL OG KLAR KROPSSÆTNING ---
+    # --- TOP: FULDT UD DYBTGÅENDE ANALYSE AF ALLE DATA (SØVN, HRV, BB, STRESS & TRÆNING) ---
     if latest_data:
-        rhr = latest_data.get("heart_rates", {}).get("restingHeartRate", 58)
+        rhr = latest_data.get("heart_rates", {}).get("restingHeartRate", None)
         
-        if rhr and rhr <= 60:
-            st.success(f"🟢 **Kropsstatus:** Med en hvilepuls på {rhr} bpm har kroppen håndteret de seneste dages løb flot og er klar til ny træning.")
+        hrv_data = latest_data.get("hrv", {})
+        hrv_val = hrv_data.get("hrvSummary", {}).get("lastNightAvg", None)
+        
+        sleep_data = latest_data.get("sleep", {})
+        sleep_dto = sleep_data.get("dailySleepDTO", {})
+        sleep_duration_seconds = sleep_dto.get("sleepTimeSeconds", None)
+        sleep_hours = round(sleep_duration_seconds / 3600, 1) if sleep_duration_seconds else None
+        
+        bb_data = latest_data.get("bodyBattery", [])
+        bb_charged = None
+        if bb_data and isinstance(bb_data, list):
+            bb_charged = bb_data[0].get("charged", None)
+            
+        stress_data = latest_data.get("stress", {})
+        avg_stress = stress_data.get("avgStressLevel", None)
+
+        # Analyser og tæl op på tværs af alle tilgængelige data
+        score = 0
+        total_checked = 0
+        details = []
+
+        if rhr is not None:
+            total_checked += 1
+            if rhr <= 60:
+                score += 1
+                details.append(f"hvilepuls ({rhr} bpm) er fin")
+            else:
+                details.append(f"hvilepuls ({rhr} bpm) er forhøjet")
+
+        if hrv_val is not None:
+            total_checked += 1
+            if hrv_val >= 40:
+                score += 1
+                details.append(f"nat-HRV ({hrv_val} ms) er god")
+            else:
+                details.append(f"nat-HRV ({hrv_val} ms) er lav")
+
+        if sleep_hours is not None:
+            total_checked += 1
+            if sleep_hours >= 7.0:
+                score += 1
+                details.append(f"søvn ({sleep_hours}t) er tilstrækkelig")
+            else:
+                details.append(f"søvn ({sleep_hours}t) er for kort")
+
+        if bb_charged is not None:
+            total_checked += 1
+            if bb_charged >= 65:
+                score += 1
+                details.append(f"Body Battery ({bb_charged}%) er ladet op")
+            else:
+                details.append(f"Body Battery ({bb_charged}%) er lavt")
+
+        if avg_stress is not None:
+            total_checked += 1
+            if avg_stress <= 35:
+                score += 1
+                details.append(f"stressniveau ({avg_stress}) er lavt")
+            else:
+                details.append(f"stressniveau ({avg_stress}) er højt")
+
+        # Byg den samlede konklusion baseret på rigtige data
+        detail_text = ", ".join(details) if details else "baseret på tilgængelige målinger"
+        
+        if total_checked > 0 and score >= (total_checked / 2):
+            st.success(f"🟢 **Kropsstatus (Analyse af alle data):** Kroppen er i god gennemsnitlig balance ({detail_text}). Træningsbelastningen fra de seneste dage er håndteret fint, og du er klar til dagens program.")
+        elif total_checked > 0:
+            st.warning(f"🟡 **Kropsstatus (Analyse af alle data):** Flere parametre viser belastning ({detail_text}). Tag det roligt i dag og lyt til kroppens signaler.")
         else:
-            st.warning(f"🟡 **Kropsstatus:** Med en hvilepuls på {rhr} bpm bærer kroppen præg af de seneste dages træningsbelastning – overvej en rolig dag.")
+            st.info("ℹ️ **Kropsstatus:** Afventer fyldestgørende sundhedsdata i filen.")
     
     st.divider()
 

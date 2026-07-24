@@ -117,8 +117,17 @@ else:
                 duration = act.get("duration", 0) / 60 
                 
                 pace_min_km = 0
+                pace_str = "0:00"
+                pace_sort = 0
                 if distance > 0 and duration > 0:
                     pace_min_km = duration / distance
+                    mins = int(pace_min_km)
+                    secs = int(round((pace_min_km - mins) * 60))
+                    if secs == 60:
+                        mins += 1
+                        secs = 0
+                    pace_str = f"{mins}:{secs:02d}"
+                    pace_sort = pace_min_km  # Bruges til at sortere grafen korrekt
                     
                 if date_str:
                     try:
@@ -132,7 +141,8 @@ else:
                         "Aktivitet": name if name else "Løb",
                         "Gennemsnitspuls": avg_hr,
                         "Distancet (km)": round(distance, 2),
-                        "Pace (min/km)": round(pace_min_km, 2)
+                        "Pace": pace_str,
+                        "_PaceSort": pace_sort
                     })
             
         df = pd.DataFrame(act_list)
@@ -155,7 +165,7 @@ else:
                 x="DatoStr", 
                 y="Gennemsnitspuls", 
                 markers=True,
-                hover_data=["Aktivitet", "Distancet (km)", "Pace (min/km)"],
+                hover_data=["Aktivitet", "Distancet (km)", "Pace"],
                 color_discrete_sequence=["#1f77b4"],
                 line_shape="spline",
                 text="Gennemsnitspuls"
@@ -189,14 +199,14 @@ else:
             fig_pace = px.line(
                 df_filtered, 
                 x="DatoStr", 
-                y="Pace (min/km)", 
+                y="_PaceSort", 
                 markers=True,
                 hover_data=["Aktivitet", "Distancet (km)", "Gennemsnitspuls"],
                 color_discrete_sequence=["#9467bd"],
                 line_shape="spline",
-                text="Pace (min/km)"
+                text=df_filtered["Pace"]
             )
-            fig_pace.update_traces(texttemplate='%{y}', textposition="top center", line=dict(width=3), marker=dict(size=8))
+            fig_pace.update_traces(texttemplate='%{text}', textposition="top center", line=dict(width=3), marker=dict(size=8))
             
             fig_pace.update_layout(
                 xaxis_title="Dato",
@@ -212,7 +222,7 @@ else:
             st.plotly_chart(fig_pace, use_container_width=True, config={"scrollZoom": False, "displayModeBar": False})
             
             st.subheader("📋 Aktivitetsdetaljer (Løb)")
-            display_df = df_filtered.drop(columns=["Dato"]).rename(columns={"DatoStr": "Dato"})
+            display_df = df_filtered.drop(columns=["Dato", "_PaceSort"]).rename(columns={"DatoStr": "Dato"})
             st.dataframe(display_df, use_container_width=True)
         else:
             st.info("Ingen løbeaktiviteter fundet i de indlæste datafiler.")

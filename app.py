@@ -61,7 +61,7 @@ else:
                 fig_rhr.update_layout(
                     template="plotly_white", 
                     margin=dict(l=10, r=10, t=30, b=10), 
-                    height=280,
+                    height=250,
                     xaxis=dict(fixedrange=True),
                     yaxis=dict(fixedrange=True)
                 )
@@ -79,7 +79,7 @@ else:
                 fig_hrv.update_layout(
                     template="plotly_white", 
                     margin=dict(l=10, r=10, t=30, b=10), 
-                    height=280,
+                    height=250,
                     xaxis=dict(fixedrange=True),
                     yaxis=dict(fixedrange=True)
                 )
@@ -178,8 +178,9 @@ else:
                 hovermode="x unified",
                 template="plotly_white",
                 margin=dict(l=20, r=20, t=30, b=20),
+                height=350,
                 xaxis=dict(fixedrange=True),
-                yaxis=dict(fixedrange=True)
+                yaxis=dict(fixedrange=True, range=[120, 170])  # Låser pulsen fast mellem 120 og 170, så den ikke stikker af!
             )
             st.plotly_chart(fig_hr, use_container_width=True, config={"scrollZoom": False, "displayModeBar": False})
 
@@ -203,6 +204,7 @@ else:
                 hovermode="x unified",
                 template="plotly_white",
                 margin=dict(l=20, r=20, t=30, b=20),
+                height=350,
                 xaxis=dict(fixedrange=True),
                 yaxis=dict(fixedrange=True, autorange="reversed")
             )

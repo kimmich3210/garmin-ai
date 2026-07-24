@@ -1,4 +1,4 @@
-﻿import streamlit as st
+import streamlit as st
 import json
 import glob
 import pandas as pd
@@ -58,8 +58,14 @@ else:
                     text="Hvilepuls"
                 )
                 fig_rhr.update_traces(texttemplate='%{y}', textposition="top center", line=dict(width=2.5), marker=dict(size=7))
-                fig_rhr.update_layout(template="plotly_white", margin=dict(l=10, r=10, t=30, b=10), height=280)
-                st.plotly_chart(fig_rhr, use_container_width=True)
+                fig_rhr.update_layout(
+                    template="plotly_white", 
+                    margin=dict(l=10, r=10, t=30, b=10), 
+                    height=280,
+                    xaxis=dict(fixedrange=True),
+                    yaxis=dict(fixedrange=True)
+                )
+                st.plotly_chart(fig_rhr, use_container_width=True, config={"scrollZoom": False, "displayModeBar": False})
                 
             with col_g2:
                 fig_hrv = px.line(
@@ -70,8 +76,14 @@ else:
                     text="HRV"
                 )
                 fig_hrv.update_traces(texttemplate='%{y}', textposition="top center", line=dict(width=2.5), marker=dict(size=7))
-                fig_hrv.update_layout(template="plotly_white", margin=dict(l=10, r=10, t=30, b=10), height=280)
-                st.plotly_chart(fig_hrv, use_container_width=True)
+                fig_hrv.update_layout(
+                    template="plotly_white", 
+                    margin=dict(l=10, r=10, t=30, b=10), 
+                    height=280,
+                    xaxis=dict(fixedrange=True),
+                    yaxis=dict(fixedrange=True)
+                )
+                st.plotly_chart(fig_hrv, use_container_width=True, config={"scrollZoom": False, "displayModeBar": False})
         else:
             st.info("Ingen historiske sundhedsdata fra de sidste 14 dage endnu.")
 
@@ -165,9 +177,11 @@ else:
                 yaxis_title="Puls (bpm)",
                 hovermode="x unified",
                 template="plotly_white",
-                margin=dict(l=20, r=20, t=30, b=20)
+                margin=dict(l=20, r=20, t=30, b=20),
+                xaxis=dict(fixedrange=True),
+                yaxis=dict(fixedrange=True)
             )
-            st.plotly_chart(fig_hr, use_container_width=True)
+            st.plotly_chart(fig_hr, use_container_width=True, config={"scrollZoom": False, "displayModeBar": False})
 
             # --- GRAF 2: PACE ---
             st.subheader("⚡ Pace (min/km)")
@@ -188,11 +202,12 @@ else:
                 yaxis_title="Pace (min/km)",
                 hovermode="x unified",
                 template="plotly_white",
-                margin=dict(l=20, r=20, t=30, b=20)
+                margin=dict(l=20, r=20, t=30, b=20),
+                xaxis=dict(fixedrange=True),
+                yaxis=dict(fixedrange=True, autorange="reversed")
             )
-            fig_pace.update_yaxes(autorange="reversed")
             
-            st.plotly_chart(fig_pace, use_container_width=True)
+            st.plotly_chart(fig_pace, use_container_width=True, config={"scrollZoom": False, "displayModeBar": False})
             
             st.subheader("📋 Aktivitetsdetaljer (Løb)")
             display_df = df_filtered.drop(columns=["Dato"]).rename(columns={"DatoStr": "Dato"})

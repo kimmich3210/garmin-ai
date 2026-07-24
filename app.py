@@ -45,11 +45,10 @@ else:
         except Exception:
             pass
 
-    # --- TOP: PRÆCIS OG DATO-BASERET ANALYSE MED TAL OG PROCENTER ---
-    st.subheader("🧠 Dybdegående Dagsanalyse & Restitutionsstatus")
+    # --- TOP: DYBTGÅENDE ANALYSE AF TRÆNING DE SENESTE DAGE & RESTITUTION ---
+    st.subheader("🧠 Dybdegående Dagsanalyse (Træningsbelastning & Restitution)")
     
     if latest_data:
-        # Uddrag præcise værdier
         rhr = latest_data.get("heart_rates", {}).get("restingHeartRate", None)
         
         hrv_data = latest_data.get("hrv", {})
@@ -68,7 +67,7 @@ else:
         stress_data = latest_data.get("stress", {})
         avg_stress = stress_data.get("avgStressLevel", None)
 
-        # Vis tallene i professionelle metrik-bokse
+        # Metrik-bokse
         col_m1, col_m2, col_m3, col_m4, col_m5 = st.columns(5)
         col_m1.metric("Hvilepuls", f"{rhr} bpm" if rhr is not None else "Ikke tilgængelig")
         col_m2.metric("Nat HRV", f"{hrv_val} ms" if hrv_val is not None else "Ikke tilgængelig")
@@ -77,8 +76,53 @@ else:
         col_m5.metric("Gns. Stress", f"{avg_stress}/100" if avg_stress is not None else "Ikke tilgængelig")
 
         st.markdown("---")
-        st.markdown(f"### 📋 Detaljeret køreplan og datagrundlag for d. {latest_date_str}")
-        
+        st.markdown(f"### 📋 Køreplan for d. {latest_date_str} baseret på de seneste dages træning og tal")
+
+        # Gennemgå de seneste 2-3 dages aktiviteter
+        recent_activities_summary = []
+        if all_activities:
+            unique_acts = {}
+            for act in all_activities:
+                aid = act.get("activityId")
+                if aid not in unique_acts:
+                    unique_acts[aid] = act
+            
+            # Sorter efter dato (nyeste først)
+            sorted_acts = sorted(
+                unique_acts.values(), 
+                key=lambda x: x.get("startTimeLocal", ""), 
+                reverse=True
+            )
+            
+            # Find aktiviteter inden for de sidste 3 dage i forhold til seneste data
+            if latest_date_str:
+                latest_dt = datetime.strptime(latest_date_str, "%Y-%m-%d")
+                three_days_ago = latest_dt - timedelta(days=3)
+                
+                for act in sorted_acts:
+                    s_local = act.get("startTimeLocal", "")[:10]
+                    if s_local:
+                        try:
+                            act_dt = datetime.strptime(s_local, "%Y-%m-%d")
+                            if act_dt >= three_days_ago:
+                                name = act.get("activityName", "Træning")
+                                dist = round(act.get("distance", 0) / 1000, 2)
+                                dur = round(act.get("duration", 0) / 60, 1)
+                                hr = act.get("averageHR", "Ukendt")
+                                recent_activities_summary.append(f"• **{s_local} ({name}):** {dist} km på {dur} min med gennemsnitspuls på {hr} bpm.")
+                        except Exception:
+                            pass
+
+        if recent_activities_summary:
+            st.markdown("**Træningsbelastning de seneste 2-3 dage:**")
+            for act_text in recent_activities_summary[:3]:  # Vis op til de 3 seneste
+                st.markdown(act_text)
+        else:
+            st.markdown("• *Ingen registrerede træningspas de sidste 2-3 dage.*")
+
+        st.markdown("<br>", unsafe_allowhtml=True)
+        st.markdown("**Restitution og kropsstatus:**")
+
         points = []
         score = 0
         total_metrics = 0
@@ -87,54 +131,54 @@ else:
             total_metrics += 1
             if rhr <= 58:
                 score += 1
-                points.append(f"• **Hvilepuls ({rhr} bpm):** Ligger på et rigtig fint og lavt niveau, hvilket indikerer god grundform og hvile.")
+                points.append(f"• **Hvilepuls ({rhr} bpm):** Holder sig fint, hvilket viser, at kroppen har håndteret de seneste dages belastning uden overbelastning.")
             else:
-                points.append(f"• **Hvilepuls ({rhr} bpm):** Ligger lidt højere, hvilket kan være tegn på let træthed.")
+                points.append(f"• **Hvilepuls ({rhr} bpm):** Er let forhøjet, hvilket ofte ses i døgnet efter et træningspas, hvor kroppen er i gang med genopbygning.")
 
         if hrv_val is not None:
             total_metrics += 1
             if hrv_val >= 45:
                 score += 1
-                points.append(f"• **Nat-HRV ({hrv_val} ms):** Højt og stabilt niveau, der viser at det autonome nervesystem er i god balance.")
+                points.append(f"• **Nat-HRV ({hrv_val} ms):** Fint niveau, som indikerer at det autonome nervesystem har kunnet restituere efter træningen.")
             else:
-                points.append(f"• **Nat-HRV ({hrv_val} ms):** Er i den lavere ende, hvilket betyder at kroppen har arbejdet under natten.")
+                points.append(f"• **Nat-HRV ({hrv_val} ms):** Lavere HRV indikerer, at træningen fra de foregående dage stadig sidder i kroppen.")
 
         if sleep_hours is not None:
             total_metrics += 1
             if sleep_hours >= 7.0:
                 score += 1
-                points.append(f"• **Søvn ({sleep_hours} timer):** Godkendt søvnlængde, der sikrer genopbygning af muskler.")
+                points.append(f"• **Søvn ({sleep_hours} timer):** God søvn understøtter den restitution, der er nødvendig efter de seneste dages aktiviteter.")
             else:
-                points.append(f"• **Søvn ({sleep_hours} timer):** For lidt søvn i forhold til optimal restitution.")
+                points.append(f"• **Søvn ({sleep_hours} timer):** Søvnunderskud gør det sværere for kroppen at restituere fuldt ud efter træning.")
 
         if bb_charged is not None:
             total_metrics += 1
             if bb_charged >= 70:
                 score += 1
-                points.append(f"• **Body Battery Opladning ({bb_charged}%):** Kroppens energiniveau er ladet godt op til en ny dag.")
+                points.append(f"• **Body Battery ({bb_charged}%):** Energiniveauet er ladet fornuftigt op.")
             else:
-                points.append(f"• **Body Battery Opladning ({bb_charged}%):** Lavere opladning end normalt.")
+                points.append(f"• **Body Battery ({bb_charged}%):** Lav genopladning – energien er tæret af de foregående dages aktiviteter.")
 
         if avg_stress is not None:
             total_metrics += 1
             if avg_stress <= 30:
                 score += 1
-                points.append(f"• **Gennemsnitlig Stress ({avg_stress}/100):** Lavt stressniveau i døgnet, hvilket skåner kroppen.")
+                points.append(f"• **Gennemsnitlig Stress ({avg_stress}/100):** Lavt generelt stressniveau.")
             else:
-                points.append(f"• **Gennemsnitlig Stress ({avg_stress}/100):** Forhøjet stressniveau, som kræver ekstra opmærksomhed.")
+                points.append(f"• **Gennemsnitlig Stress ({avg_stress}/100):** Forhøjet stress i kroppen.")
 
         for p in points:
             st.markdown(p)
 
-        st.write("") # Brug standard tom linje i stedet for HTML-hack
+        st.write("")
 
-        # Endelig konklusion baseret på de faktiske tal
+        # Konklusion
         if total_metrics == 0:
             st.warning("⚠️ Ingen detaljerede sundhedsmetrikker fundet i dagens datafil endnu.")
         elif score >= (total_metrics / 2):
-            st.success(f"🟢 **Konklusion ({score}/{total_metrics} parametre i top):** Tallene viser, at din kroppens reserver er fine. Du kan roligt gennemføre dagens planlagte træning med fokus på zonen.")
+            st.success(f"🟢 **Dagens udsigter ({score}/{total_metrics} parametre godkendt):** Din kroppe har optaget og håndteret træningen fra de sidste par dage flot. Dagen i dag ligger åben for at fortsætte din planlagte træning med god energi.")
         else:
-            st.warning(f"🟡 **Konklusion ({score}/{total_metrics} parametre godkendt):** Flere nøgletal viser, at kroppen er mærket af belastning. Overvej at tage det med ro eller skrue ned for intensiteten i dag.")
+            st.warning(f"🟡 **Dagens udsigter ({score}/{total_metrics} parametre godkendt):** Træningen fra de seneste dage har sat sit præg på systemet. Giv kroppen ekstra plads til restitution i dag, eller hold intensiteten nede.")
     else:
         st.warning("Kunne ikke indhente data til analysen.")
 

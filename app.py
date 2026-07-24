@@ -279,13 +279,13 @@ else:
                 hovermode="x unified",
                 template="plotly_white",
                 margin=dict(l=20, r=20, t=40, b=20),
-                height=400,
+                    height=400,
                 xaxis=dict(fixedrange=True),
                 yaxis=dict(fixedrange=True)
             )
             st.plotly_chart(fig_hr, use_container_width=True, config={"scrollZoom": False, "displayModeBar": False})
 
-            # SIMPEL PULS-FEEDBACK (SAMMENLIGNER START SIDEN 3. JULI MED SENESTE)
+            # SIMPEL PULS-FEEDBACK
             if len(df_filtered) >= 2:
                 start_hr = df_filtered.iloc[0]["Gennemsnitspuls"]
                 end_hr = df_filtered.iloc[-1]["Gennemsnitspuls"]
@@ -323,17 +323,35 @@ else:
             )
             st.plotly_chart(fig_pace, use_container_width=True, config={"scrollZoom": False, "displayModeBar": False})
 
-            # SIMPEL PACE-FEEDBACK
+            # SIMPEL PACE- OG LANGTIDSANALYSE (MAKS 3+ MÅNEDERS MAF-FREMGANG)
             if len(df_filtered) >= 2:
+                start_date = df_filtered.iloc[0]["Dato"]
+                end_date = df_filtered.iloc[-1]["Dato"]
+                days_passed = (end_date - start_date).days
+                
                 start_pace = df_filtered.iloc[0]["_PaceSort"]
                 end_pace = df_filtered.iloc[-1]["_PaceSort"]
-                
-                if end_pace < start_pace:
-                    st.success("🚀 **Tempo:** Hurtigere (Du løber stærkere pr. kilometer)")
-                elif end_pace > start_pace:
-                    st.warning("🐢 **Tempo:** Langsommere")
+                start_hr = df_filtered.iloc[0]["Gennemsnitspuls"]
+                end_hr = df_filtered.iloc[-1]["Gennemsnitspuls"]
+
+                # Hvis der er gået over ca. 75 dage (2.5 - 3+ måneder) laver den den ægte MAF-langtidstest
+                if days_passed >= 75:
+                    if end_pace < start_pace and end_hr <= start_hr + 3:
+                        st.success(f"🏆 **Langtidstest (MAF-fremgang over {days_passed} dage):** Fantastisk! Du løber nu hurtigere ved samme eller lavere puls over de sidste måneder. Din aerobe base udvikler sig præcist som den skal.")
+                    elif end_pace < start_pace:
+                        st.success("🚀 **Tempo:** Hurtigere (Du løber stærkere pr. kilometer)")
+                    elif end_pace > start_pace:
+                        st.warning("🐢 **Tempo:** Langsommere")
+                    else:
+                        st.info("➡️ **Tempo:** Stabilt over perioden")
                 else:
-                    st.info("➡️ **Tempo:** Stabilt")
+                    # Standard kortere visning
+                    if end_pace < start_pace:
+                        st.success("🚀 **Tempo:** Hurtigere (Du løber stærkere pr. kilometer)")
+                    elif end_pace > start_pace:
+                        st.warning("🐢 **Tempo:** Langsommere")
+                    else:
+                        st.info("➡️ **Tempo:** Stabilt")
             
             st.subheader("📋 Aktivitetsdetaljer (Løb)")
             display_df = df_filtered.drop(columns=["Dato", "_PaceSort"]).rename(columns={"DatoStr": "Dato"})

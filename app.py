@@ -45,7 +45,7 @@ else:
         except Exception:
             pass
 
-    # --- TOP: TRÆNINGSKLARHED OG SYGDOMS-STATUS (INKL. HVILEPULS) ---
+    # --- TOP: TRÆNINGSKLARHED OG SYGDOMS-STATUS ---
     if latest_data:
         rhr = latest_data.get("heart_rates", {}).get("restingHeartRate", None)
         hrv_data = latest_data.get("hrv", {})
@@ -178,7 +178,7 @@ else:
     with col_titel:
         st.subheader("📈 MAF Løbetræning")
     with col_filter:
-        time_filter = st.selectbox("Vælg periode:", ["Sidste måned", "Alle tilgængelige data"])
+        time_filter = st.selectbox("Vælg periode:", ["Sidste 30 dage", "Sidste måned", "Alle tilgængelige data"])
 
     if all_activities:
         act_list = []
@@ -233,9 +233,9 @@ else:
         df = pd.DataFrame(act_list)
         
         if not df.empty:
-            if time_filter == "Sidste måned":
-                one_month_ago = datetime.now() - timedelta(days=30)
-                df_filtered = df[df["Dato"] >= one_month_ago].copy()
+            if time_filter in ["Sidste 30 dage", "Sidste måned"]:
+                thirty_days_ago = datetime.now() - timedelta(days=30)
+                df_filtered = df[df["Dato"] >= thirty_days_ago].copy()
                 if df_filtered.empty:
                     df_filtered = df.copy()
             else:
@@ -246,7 +246,7 @@ else:
             base_maf = 155
 
             # --- GRAF 1: GENNEMSNITSPULS (MAF) ---
-            st.subheader("❤️ Gennemsnitspuls (MAF)")
+            st.subheader("❤️ Gennemsnitspuls (MAF) - Sidste 30 dage")
             fig_hr = px.line(
                 df_filtered, 
                 x="DatoStr", 
@@ -280,20 +280,21 @@ else:
             )
             st.plotly_chart(fig_hr, use_container_width=True, config={"scrollZoom": False, "displayModeBar": False})
 
-            # UDVIKLINGS-FEEDBACK FOR PULSGRAF (SAMMENLIGNER SIDSTE MED TIDLIGERE)
+            # 30-DAGES ANALYSE: SAMMENLIGNING AF PULS (FØRSTE HALVDEL VS SIDSTE HALVDEL AF PERIODEN)
             if len(df_filtered) >= 2:
-                latest_hr = df_filtered.iloc[-1]["Gennemsnitspuls"]
-                avg_earlier_hr = df_filtered.iloc[:-1]["Gennemsnitspuls"].mean()
+                mid_idx = len(df_filtered) // 2
+                first_half_hr = df_filtered.iloc[:mid_idx]["Gennemsnitspuls"].mean()
+                second_half_hr = df_filtered.iloc[mid_idx]["Gennemsnitspuls"].mean() if len(df_filtered) > 2 else df_filtered.iloc[-1]["Gennemsnitspuls"]
                 
-                if latest_hr < avg_earlier_hr:
-                    st.success(f"📈 **Udviklingsanalyse (Puls):** Du har **forbedret dig!** Din seneste gennemsnitspuls ({latest_hr} bpm) er lavere end dit tidligere gennemsnit ({int(avg_earlier_hr)} bpm), hvilket viser fremgang i din aerobe effektivitet.")
-                elif latest_hr > avg_earlier_hr + 3:
-                    st.warning(f"📉 **Udviklingsanalyse (Puls):** Din puls er steget til {latest_hr} bpm (tidligere gennemsnit: {int(avg_earlier_hr)} bpm). Det kan tyde på træthed, højere intensitet eller at formen er midlertidigt påvirket.")
+                if second_half_hr < first_half_hr:
+                    st.success(f"📈 **30-dages pulsanalyse:** Din gennemsnitspuls er faldet i løbet af de sidste 30 dage (fra ca. {int(first_half_hr)} bpm til {int(second_half_hr)} bpm ved samme eller lignende indsats). Det er et stærkt tegn på at din aerobe form og effektivitet er **forbedret**!")
+                elif second_half_hr > first_half_hr + 2:
+                    st.warning(f"📉 **30-dages pulsanalyse:** Din gennemsnitspuls er steget over de seneste 30 dage (fra ca. {int(first_half_hr)} bpm til {int(second_half_hr)} bpm). Det kan indikere øget træthed, varmere vejr eller at kroppen har arbejdet hårdere.")
                 else:
-                    st.info(f"➡️ **Udviklingsanalyse (Puls):** Din puls ligger stabilt omkring {latest_hr} bpm i forhold til dine tidligere ture.")
+                    st.info(f"➡️ **30-dages pulsanalyse:** Din gennemsnitlige puls har ligget meget stabilt (omkring {int(first_half_hr)}–{int(second_half_hr)} bpm) over de seneste 30 dage.")
 
             # --- GRAF 2: PACE ---
-            st.subheader("⚡ Pace (min/km)")
+            st.subheader("⚡ Pace (min/km) - Sidste 30 dage")
             fig_pace = px.line(
                 df_filtered, 
                 x="DatoStr", 
@@ -319,24 +320,26 @@ else:
             
             st.plotly_chart(fig_pace, use_container_width=True, config={"scrollZoom": False, "displayModeBar": False})
 
-            # UDVIKLINGS-FEEDBACK FOR PACEGRAF (SAMMENLIGNER SIDSTE MED TIDLIGERE)
+            # 30-DAGES ANALYSE: SAMMENLIGNING AF PACE (ER DU BLEVET HURTIGERE?)
             if len(df_filtered) >= 2:
-                latest_sort = df_filtered.iloc[-1]["_PaceSort"]
-                latest_pace_str = df_filtered.iloc[-1]["Pace"]
-                avg_earlier_sort = df_filtered.iloc[:-1]["_PaceSort"].mean()
+                start_pace = df_filtered.iloc[0]["_PaceSort"]
+                end_pace = df_filtered.iloc[-1]["_PaceSort"]
+                start_pace_str = df_filtered.iloc[0]["Pace"]
+                end_pace_str = df_filtered.iloc[-1]["Pace"]
                 
-                # I min/km betyder LAVERET tal HURTIGERE pace
-                if latest_sort < avg_earlier_sort:
-                    st.success(f"📈 **Udviklingsanalyse (Pace):** Du har **forbedret dig!** Din pace er steget til {latest_pace_str} min/km, hvilket er hurtigere end dit tidligere snit – et klokkeklart tegn på fremgang i din MAF-form.")
-                elif latest_sort > avg_earlier_sort + 0.3:
-                    st.warning(f"📉 **Udviklingsanalyse (Pace):** Din pace er faldet til {latest_pace_str} min/km (langsommere end normalt). Det kan skyldes modvind, terræn eller at kroppen har krævet mere ro.")
+                # Bemærk: I min/km er lavere tal = hurtigere pace!
+                if end_pace < start_pace:
+                    diff_sec = int((start_pace - end_pace) * 60)
+                    st.success(f"🚀 **30-dages pace-analyse:** Du er **blevet hurtigere** over de sidste 30 dage! Din pace er gået fra {start_pace_str} min/km til {end_pace_str} min/km (en forbedring på ca. {diff_sec} sekunder pr. kilometer ved tilsvarende puls). Fantastisk MAF-fremgang!")
+                elif end_pace > start_pace + 0.1:
+                    st.warning(f"🐢 **30-dages pace-analyse:** Din pace er steget (blevet langsommere) fra {start_pace_str} til {end_pace_str} min/km over perioden. Det kan skyldes bevidst nedjustering af tempo for at holde pulsen nede, eller at kroppen har haft brug for ekstra restitution.")
                 else:
-                    st.info(f"➡️ **Udviklingsanalyse (Pace):** Din pace er stabil på {latest_pace_str} min/km i forhold til dine tidligere løb.")
+                    st.info(f"➡️ **30-dages pace-analyse:** Din pace har ligget stabilt omkring {end_pace_str} min/km over de seneste 30 dage.")
             
-            st.subheader("📋 Aktivitetsdetaljer (Løb)")
+            st.subheader("📋 Aktivitetsdetaljer (Løb - Sidste 30 dage)")
             display_df = df_filtered.drop(columns=["Dato", "_PaceSort"]).rename(columns={"DatoStr": "Dato"})
             st.dataframe(display_df, use_container_width=True)
         else:
-            st.info("Ingen løbeaktiviteter fundet i de indlæste datafiler.")
+            st.info("Ingen løbeaktiviteter fundet inden for de sidste 30 dage.")
     else:
         st.info("Ingen aktivitetsdata fundet i filerne.")

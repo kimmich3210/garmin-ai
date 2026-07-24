@@ -60,7 +60,6 @@ else:
         sleep_duration_seconds = sleep_dto.get("sleepTimeSeconds", None)
         sleep_hours = round(sleep_duration_seconds / 3600, 1) if sleep_duration_seconds else None
         
-        # Hent Body Battery værdier hvis tilgængelig
         bb_data = latest_data.get("bodyBattery", [])
         bb_charged = None
         if bb_data and isinstance(bb_data, list):
@@ -80,7 +79,6 @@ else:
         st.markdown("---")
         st.markdown(f"### 📋 Detaljeret køreplan og datagrundlag for d. {latest_date_str}")
         
-        # Logisk udregning baseret på faktiske data
         points = []
         score = 0
         total_metrics = 0
@@ -91,13 +89,13 @@ else:
                 score += 1
                 points.append(f"• **Hvilepuls ({rhr} bpm):** Ligger på et rigtig fint og lavt niveau, hvilket indikerer god grundform og hvile.")
             else:
-                points.append(f"• **Hvilepuls ({rhr} bpm):** Ligger lidt højere, hvilket kan være tegn på let træthed eller fordøjelsesarbejde.")
+                points.append(f"• **Hvilepuls ({rhr} bpm):** Ligger lidt højere, hvilket kan være tegn på let træthed.")
 
         if hrv_val is not None:
             total_metrics += 1
             if hrv_val >= 45:
                 score += 1
-                points.append(f"• **Nat-HRV ({hrv_val} ms):** Højt og stabilt niveau, der viser at dit autonome nervesystem er i god balance.")
+                points.append(f"• **Nat-HRV ({hrv_val} ms):** Højt og stabilt niveau, der viser at det autonome nervesystem er i god balance.")
             else:
                 points.append(f"• **Nat-HRV ({hrv_val} ms):** Er i den lavere ende, hvilket betyder at kroppen har arbejdet under natten.")
 
@@ -115,7 +113,7 @@ else:
                 score += 1
                 points.append(f"• **Body Battery Opladning ({bb_charged}%):** Kroppens energiniveau er ladet godt op til en ny dag.")
             else:
-                points.append(f"• **Body Battery Opladning ({bb_charged}%):** Lavere opladning end normalt – energireserverne er udfordrede.")
+                points.append(f"• **Body Battery Opladning ({bb_charged}%):** Lavere opladning end normalt.")
 
         if avg_stress is not None:
             total_metrics += 1
@@ -128,7 +126,7 @@ else:
         for p in points:
             st.markdown(p)
 
-        st.markdown("<br>", unsafe_allowhtml=True)
+        st.write("") # Brug standard tom linje i stedet for HTML-hack
 
         # Endelig konklusion baseret på de faktiske tal
         if total_metrics == 0:

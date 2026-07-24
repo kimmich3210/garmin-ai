@@ -45,7 +45,7 @@ else:
         except Exception:
             pass
 
-    # --- TOP: TRÆNINGSKLARHED OG FULD HELBREDBASERET STATUS (RASK / PÅ VEJ AT BLIVE SYG / SYG) ---
+    # --- TOP: TRÆNINGSKLARHED OG SYGDOMS-STATUS (ENS SKRIFTSTØRRELSE) ---
     if latest_data:
         rhr = latest_data.get("heart_rates", {}).get("restingHeartRate", None)
         hrv_data = latest_data.get("hrv", {})
@@ -63,7 +63,6 @@ else:
         stress_data = latest_data.get("stress", {})
         avg_stress = stress_data.get("avgStressLevel", None)
 
-        # 1. Beregn træningsklarhed (1-100%) baseret på alle tilgængelige data
         scores = []
         if rhr is not None:
             scores.append(max(0, min(100, 100 - (rhr - 50) * 2.5)))
@@ -78,11 +77,8 @@ else:
 
         readiness_pct = int(sum(scores) / len(scores)) if scores else 75
 
-        # 2. Helbredsstatus: Vurder om brugeren er rask, på vej til at blive syg eller syg baseret på alle data
         status_type = "rask"
         reasons = []
-
-        # Tjek for sygdomstegn (f.eks. høj hvilepuls, lav HRV, tømt Body Battery eller høj stress)
         warning_indicators = 0
         if rhr is not None and rhr > 62:
             warning_indicators += 1
@@ -104,25 +100,27 @@ else:
         else:
             status_type = "rask"
 
-        # Vis resultatet øverst i to kolonner
+        # Brug to kolonner, hvor tekststørrelsen nu er helt ensartet med standard overskrifter og brødtekst
         col_c1, col_c2 = st.columns([1, 2])
         with col_c1:
+            st.subheader("Træningsklarhed")
             if readiness_pct >= 75:
-                st.success(f"### Træningsklarhed\n# {readiness_pct}%")
+                st.success(f"**{readiness_pct}%** (Optimal)")
             elif readiness_pct >= 50:
-                st.warning(f"### Træningsklarhed\n# {readiness_pct}%")
+                st.warning(f"**{readiness_pct}%** (Moderat)")
             else:
-                st.error(f"### Træningsklarhed\n# {readiness_pct}%")
+                st.error(f"**{readiness_pct}%** (Lav)")
                 
         with col_c2:
+            st.subheader("Helbredsstatus")
             if status_type == "syg":
                 rs_text = ", ".join(reasons) if reasons else "flere kritiske værdier"
-                st.error(f"🔴 **Helbredsstatus: Syg / Kraftig belastning**\nDine data viser markante tegn på mistrivsel eller sygdom ({rs_text}). Hold fuldstændig pause.")
+                st.error(f"**Syg / Kraftig belastning:** Dine data viser tegn på mistrivsel ({rs_text}). Hold fuldstændig pause.")
             elif status_type == "paa_vej":
                 rs_text = ", ".join(reasons) if reasons else "afvigende målinger"
-                st.warning(f"🟡 **Helbredsstatus: Muligvis på vej til at blive syg**\nData indikerer at kroppen er under pres ({rs_text}). Sæt tempoet ned og lyt til kroppen.")
+                st.warning(f"**Muligvis på vej til at blive syg:** Kroppen er under pres ({rs_text}). Sæt tempoet ned.")
             else:
-                st.success(f"🟢 **Helbredsstatus: Rask og i balance**\nAlle dine helbredsdata (puls, HRV, søvn, stress og batteri) viser normale, sunde værdier.")
+                st.success(f"**Rask og i balance:** Alle helbredsdata (puls, HRV, søvn, stress og batteri) viser normale, sunde værdier.")
     
     st.divider()
 

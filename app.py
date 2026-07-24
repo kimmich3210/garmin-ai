@@ -87,14 +87,12 @@ else:
                 if aid not in unique_acts:
                     unique_acts[aid] = act
             
-            # Sorter efter dato (nyeste først)
             sorted_acts = sorted(
                 unique_acts.values(), 
                 key=lambda x: x.get("startTimeLocal", ""), 
                 reverse=True
             )
             
-            # Find aktiviteter inden for de sidste 3 dage i forhold til seneste data
             if latest_date_str:
                 latest_dt = datetime.strptime(latest_date_str, "%Y-%m-%d")
                 three_days_ago = latest_dt - timedelta(days=3)
@@ -115,12 +113,12 @@ else:
 
         if recent_activities_summary:
             st.markdown("**Træningsbelastning de seneste 2-3 dage:**")
-            for act_text in recent_activities_summary[:3]:  # Vis op til de 3 seneste
+            for act_text in recent_activities_summary[:3]:
                 st.markdown(act_text)
         else:
             st.markdown("• *Ingen registrerede træningspas de sidste 2-3 dage.*")
 
-        st.markdown("<br>", unsafe_allowhtml=True)
+        st.write("")
         st.markdown("**Restitution og kropsstatus:**")
 
         points = []
@@ -133,13 +131,13 @@ else:
                 score += 1
                 points.append(f"• **Hvilepuls ({rhr} bpm):** Holder sig fint, hvilket viser, at kroppen har håndteret de seneste dages belastning uden overbelastning.")
             else:
-                points.append(f"• **Hvilepuls ({rhr} bpm):** Er let forhøjet, hvilket ofte ses i døgnet efter et træningspas, hvor kroppen er i gang med genopbygning.")
+                points.append(f"• **Hvilepuls ({rhr} bpm):** Er let forhøjet, hvilket ofte ses i døgnet efter et træningspas.")
 
         if hrv_val is not None:
             total_metrics += 1
             if hrv_val >= 45:
                 score += 1
-                points.append(f"• **Nat-HRV ({hrv_val} ms):** Fint niveau, som indikerer at det autonome nervesystem har kunnet restituere efter træningen.")
+                points.append(f"• **Nat-HRV ({hrv_val} ms):** Fint niveau, som indikerer at det autonome nervesystem har kunnet restituere.")
             else:
                 points.append(f"• **Nat-HRV ({hrv_val} ms):** Lavere HRV indikerer, at træningen fra de foregående dage stadig sidder i kroppen.")
 
@@ -147,9 +145,9 @@ else:
             total_metrics += 1
             if sleep_hours >= 7.0:
                 score += 1
-                points.append(f"• **Søvn ({sleep_hours} timer):** God søvn understøtter den restitution, der er nødvendig efter de seneste dages aktiviteter.")
+                points.append(f"• **Søvn ({sleep_hours} timer):** God søvn understøtter den restitution, der er nødvendig.")
             else:
-                points.append(f"• **Søvn ({sleep_hours} timer):** Søvnunderskud gør det sværere for kroppen at restituere fuldt ud efter træning.")
+                points.append(f"• **Søvn ({sleep_hours} timer):** Søvnunderskud gør det sværere for kroppen at restituere fuldt ud.")
 
         if bb_charged is not None:
             total_metrics += 1
@@ -172,7 +170,6 @@ else:
 
         st.write("")
 
-        # Konklusion
         if total_metrics == 0:
             st.warning("⚠️ Ingen detaljerede sundhedsmetrikker fundet i dagens datafil endnu.")
         elif score >= (total_metrics / 2):

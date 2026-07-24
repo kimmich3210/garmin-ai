@@ -1,0 +1,3639 @@
+{
+    "fetched_at": "2026-07-05",
+    "stats": {
+        "userProfileId": 147275445,
+        "totalKilocalories": 3209.0,
+        "activeKilocalories": 1053.0,
+        "bmrKilocalories": 2156.0,
+        "wellnessKilocalories": 3209.0,
+        "burnedKilocalories": null,
+        "consumedKilocalories": null,
+        "remainingKilocalories": null,
+        "totalSteps": 20656,
+        "netCalorieGoal": null,
+        "totalDistanceMeters": 16534,
+        "wellnessDistanceMeters": 16534,
+        "wellnessActiveKilocalories": 1053.0,
+        "netRemainingKilocalories": 1053.0,
+        "userDailySummaryId": 147275445,
+        "calendarDate": "2026-07-05",
+        "rule": {
+            "typeId": 2,
+            "typeKey": "private"
+        },
+        "uuid": "9b0bd204c176457da970daa8561b6abd",
+        "dailyStepGoal": 12620,
+        "wellnessStartTimeGmt": "2026-07-04T22:00:00.0",
+        "wellnessStartTimeLocal": "2026-07-05T00:00:00.0",
+        "wellnessEndTimeGmt": "2026-07-05T22:00:00.0",
+        "wellnessEndTimeLocal": "2026-07-06T00:00:00.0",
+        "durationInMilliseconds": 86400000,
+        "wellnessDescription": null,
+        "highlyActiveSeconds": 9931,
+        "activeSeconds": 4280,
+        "sedentarySeconds": 50469,
+        "sleepingSeconds": 21720,
+        "includesWellnessData": true,
+        "includesActivityData": true,
+        "includesCalorieConsumedData": false,
+        "privacyProtected": false,
+        "moderateIntensityMinutes": 44,
+        "vigorousIntensityMinutes": 62,
+        "floorsAscendedInMeters": null,
+        "floorsDescendedInMeters": null,
+        "floorsAscended": null,
+        "floorsDescended": null,
+        "intensityMinutesGoal": 150,
+        "userFloorsAscendedGoal": 10,
+        "minHeartRate": 53,
+        "maxHeartRate": 154,
+        "restingHeartRate": 58,
+        "lastSevenDaysAvgRestingHeartRate": 57,
+        "source": "GARMIN",
+        "averageStressLevel": 35,
+        "maxStressLevel": 96,
+        "stressDuration": 34740,
+        "restStressDuration": 35400,
+        "activityStressDuration": 14880,
+        "uncategorizedStressDuration": 960,
+        "totalStressDuration": 85980,
+        "lowStressDuration": 16740,
+        "mediumStressDuration": 11220,
+        "highStressDuration": 6780,
+        "stressPercentage": 40.4,
+        "restStressPercentage": 41.17,
+        "activityStressPercentage": 17.31,
+        "uncategorizedStressPercentage": 1.12,
+        "lowStressPercentage": 19.47,
+        "mediumStressPercentage": 13.05,
+        "highStressPercentage": 7.89,
+        "stressQualifier": "BALANCED",
+        "measurableAwakeDuration": 63300,
+        "measurableAsleepDuration": 21720,
+        "lastSyncTimestampGMT": null,
+        "minAvgHeartRate": 55,
+        "maxAvgHeartRate": 154,
+        "bodyBatteryChargedValue": 53,
+        "bodyBatteryDrainedValue": 68,
+        "bodyBatteryHighestValue": 73,
+        "bodyBatteryLowestValue": 9,
+        "bodyBatteryMostRecentValue": 9,
+        "bodyBatteryDuringSleep": 49,
+        "bodyBatteryAtWakeTime": 73,
+        "bodyBatteryVersion": 3.0,
+        "abnormalHeartRateAlertsCount": null,
+        "averageSpo2": null,
+        "lowestSpo2": null,
+        "latestSpo2": null,
+        "latestSpo2ReadingTimeGmt": null,
+        "latestSpo2ReadingTimeLocal": null,
+        "averageMonitoringEnvironmentAltitude": 4.0,
+        "restingCaloriesFromActivity": 157.0,
+        "bodyBatteryDynamicFeedbackEvent": {
+            "eventTimestampGmt": "2026-07-05T20:35:53",
+            "bodyBatteryLevel": "LOW",
+            "feedbackShortType": "SLEEP_PREPARATION_STRESSFUL_AND_INTENSIVE_EXERCISE",
+            "feedbackLongType": "SLEEP_PREPARATION_STRESSFUL_AND_INTENSIVE_EXERCISE_AND_BB_LOW"
+        },
+        "endOfDayBodyBatteryDynamicFeedbackEvent": {
+            "eventTimestampGmt": "2026-07-05T09:13:55",
+            "bodyBatteryLevel": "MODERATE",
+            "feedbackShortType": "SLEEP_TIME_PASSED_RECOVERING_AND_INTENSIVE_EXERCISE",
+            "feedbackLongType": "SLEEP_TIME_PASSED_RECOVERING_AND_INTENSIVE_EXERCISE"
+        },
+        "bodyBatteryActivityEventList": [
+            {
+                "eventType": "SLEEP",
+                "eventStartTimeGmt": "2026-07-05T00:29:04",
+                "timezoneOffset": 7200000,
+                "durationInMilliseconds": 21720000,
+                "bodyBatteryImpact": 49,
+                "feedbackType": "NONE",
+                "shortFeedback": "NONE",
+                "deviceId": 3630435047,
+                "activityName": null,
+                "activityType": null,
+                "activityId": null,
+                "eventUpdateTimeGmt": "2026-07-05T06:35:43"
+            },
+            {
+                "eventType": "ACTIVITY",
+                "eventStartTimeGmt": "2026-07-05T06:56:28",
+                "timezoneOffset": 7200000,
+                "durationInMilliseconds": 6240000,
+                "bodyBatteryImpact": -17,
+                "feedbackType": "EXERCISE_TRAINING_EFFECT_3",
+                "shortFeedback": "IMPROVING_AEROBIC_BASE",
+                "deviceId": 3630435047,
+                "activityName": "Vallensbæk Løb",
+                "activityType": "running",
+                "activityId": 23484608679,
+                "eventUpdateTimeGmt": "2026-07-05T08:40:43"
+            }
+        ],
+        "avgWakingRespirationValue": 16.0,
+        "highestRespirationValue": 24.0,
+        "lowestRespirationValue": 7.0,
+        "latestRespirationValue": 17.0,
+        "latestRespirationTimeGMT": "2026-07-05T22:00:00.0",
+        "respirationAlgorithmVersion": 100
+    },
+    "hrv": {
+        "userProfilePk": 147275445,
+        "hrvSummary": {
+            "calendarDate": "2026-07-05",
+            "weeklyAvg": 42,
+            "lastNightAvg": 42,
+            "lastNight5MinHigh": 61,
+            "baseline": {
+                "lowUpper": 36,
+                "balancedLow": 38,
+                "balancedUpper": 48,
+                "markerValue": 0.44999695
+            },
+            "status": "BALANCED",
+            "feedbackPhrase": "HRV_BALANCED_8",
+            "createTimeStamp": "2026-07-05T06:35:49.205"
+        },
+        "hrvReadings": [
+            {
+                "hrvValue": 44,
+                "readingTimeGMT": "2026-07-05T00:32:11.0",
+                "readingTimeLocal": "2026-07-05T02:32:11.0"
+            },
+            {
+                "hrvValue": 39,
+                "readingTimeGMT": "2026-07-05T00:37:11.0",
+                "readingTimeLocal": "2026-07-05T02:37:11.0"
+            },
+            {
+                "hrvValue": 37,
+                "readingTimeGMT": "2026-07-05T00:42:11.0",
+                "readingTimeLocal": "2026-07-05T02:42:11.0"
+            },
+            {
+                "hrvValue": 36,
+                "readingTimeGMT": "2026-07-05T00:47:11.0",
+                "readingTimeLocal": "2026-07-05T02:47:11.0"
+            },
+            {
+                "hrvValue": 41,
+                "readingTimeGMT": "2026-07-05T00:52:11.0",
+                "readingTimeLocal": "2026-07-05T02:52:11.0"
+            },
+            {
+                "hrvValue": 41,
+                "readingTimeGMT": "2026-07-05T00:57:11.0",
+                "readingTimeLocal": "2026-07-05T02:57:11.0"
+            },
+            {
+                "hrvValue": 37,
+                "readingTimeGMT": "2026-07-05T01:02:11.0",
+                "readingTimeLocal": "2026-07-05T03:02:11.0"
+            },
+            {
+                "hrvValue": 40,
+                "readingTimeGMT": "2026-07-05T01:07:11.0",
+                "readingTimeLocal": "2026-07-05T03:07:11.0"
+            },
+            {
+                "hrvValue": 38,
+                "readingTimeGMT": "2026-07-05T01:12:11.0",
+                "readingTimeLocal": "2026-07-05T03:12:11.0"
+            },
+            {
+                "hrvValue": 39,
+                "readingTimeGMT": "2026-07-05T01:17:11.0",
+                "readingTimeLocal": "2026-07-05T03:17:11.0"
+            },
+            {
+                "hrvValue": 48,
+                "readingTimeGMT": "2026-07-05T01:22:11.0",
+                "readingTimeLocal": "2026-07-05T03:22:11.0"
+            },
+            {
+                "hrvValue": 34,
+                "readingTimeGMT": "2026-07-05T01:27:11.0",
+                "readingTimeLocal": "2026-07-05T03:27:11.0"
+            },
+            {
+                "hrvValue": 35,
+                "readingTimeGMT": "2026-07-05T01:32:11.0",
+                "readingTimeLocal": "2026-07-05T03:32:11.0"
+            },
+            {
+                "hrvValue": 24,
+                "readingTimeGMT": "2026-07-05T01:37:11.0",
+                "readingTimeLocal": "2026-07-05T03:37:11.0"
+            },
+            {
+                "hrvValue": 32,
+                "readingTimeGMT": "2026-07-05T01:42:11.0",
+                "readingTimeLocal": "2026-07-05T03:42:11.0"
+            },
+            {
+                "hrvValue": 26,
+                "readingTimeGMT": "2026-07-05T01:47:11.0",
+                "readingTimeLocal": "2026-07-05T03:47:11.0"
+            },
+            {
+                "hrvValue": 39,
+                "readingTimeGMT": "2026-07-05T01:52:11.0",
+                "readingTimeLocal": "2026-07-05T03:52:11.0"
+            },
+            {
+                "hrvValue": 36,
+                "readingTimeGMT": "2026-07-05T01:57:11.0",
+                "readingTimeLocal": "2026-07-05T03:57:11.0"
+            },
+            {
+                "hrvValue": 26,
+                "readingTimeGMT": "2026-07-05T02:02:11.0",
+                "readingTimeLocal": "2026-07-05T04:02:11.0"
+            },
+            {
+                "hrvValue": 26,
+                "readingTimeGMT": "2026-07-05T02:07:11.0",
+                "readingTimeLocal": "2026-07-05T04:07:11.0"
+            },
+            {
+                "hrvValue": 34,
+                "readingTimeGMT": "2026-07-05T02:12:11.0",
+                "readingTimeLocal": "2026-07-05T04:12:11.0"
+            },
+            {
+                "hrvValue": 29,
+                "readingTimeGMT": "2026-07-05T02:17:11.0",
+                "readingTimeLocal": "2026-07-05T04:17:11.0"
+            },
+            {
+                "hrvValue": 32,
+                "readingTimeGMT": "2026-07-05T02:22:11.0",
+                "readingTimeLocal": "2026-07-05T04:22:11.0"
+            },
+            {
+                "hrvValue": 29,
+                "readingTimeGMT": "2026-07-05T02:27:11.0",
+                "readingTimeLocal": "2026-07-05T04:27:11.0"
+            },
+            {
+                "hrvValue": 34,
+                "readingTimeGMT": "2026-07-05T02:32:11.0",
+                "readingTimeLocal": "2026-07-05T04:32:11.0"
+            },
+            {
+                "hrvValue": 36,
+                "readingTimeGMT": "2026-07-05T02:37:11.0",
+                "readingTimeLocal": "2026-07-05T04:37:11.0"
+            },
+            {
+                "hrvValue": 39,
+                "readingTimeGMT": "2026-07-05T02:42:11.0",
+                "readingTimeLocal": "2026-07-05T04:42:11.0"
+            },
+            {
+                "hrvValue": 42,
+                "readingTimeGMT": "2026-07-05T02:47:11.0",
+                "readingTimeLocal": "2026-07-05T04:47:11.0"
+            },
+            {
+                "hrvValue": 41,
+                "readingTimeGMT": "2026-07-05T02:52:11.0",
+                "readingTimeLocal": "2026-07-05T04:52:11.0"
+            },
+            {
+                "hrvValue": 49,
+                "readingTimeGMT": "2026-07-05T02:57:11.0",
+                "readingTimeLocal": "2026-07-05T04:57:11.0"
+            },
+            {
+                "hrvValue": 47,
+                "readingTimeGMT": "2026-07-05T03:02:11.0",
+                "readingTimeLocal": "2026-07-05T05:02:11.0"
+            },
+            {
+                "hrvValue": 50,
+                "readingTimeGMT": "2026-07-05T03:07:11.0",
+                "readingTimeLocal": "2026-07-05T05:07:11.0"
+            },
+            {
+                "hrvValue": 56,
+                "readingTimeGMT": "2026-07-05T03:12:11.0",
+                "readingTimeLocal": "2026-07-05T05:12:11.0"
+            },
+            {
+                "hrvValue": 44,
+                "readingTimeGMT": "2026-07-05T03:17:11.0",
+                "readingTimeLocal": "2026-07-05T05:17:11.0"
+            },
+            {
+                "hrvValue": 38,
+                "readingTimeGMT": "2026-07-05T03:22:11.0",
+                "readingTimeLocal": "2026-07-05T05:22:11.0"
+            },
+            {
+                "hrvValue": 37,
+                "readingTimeGMT": "2026-07-05T03:27:11.0",
+                "readingTimeLocal": "2026-07-05T05:27:11.0"
+            },
+            {
+                "hrvValue": 38,
+                "readingTimeGMT": "2026-07-05T03:32:11.0",
+                "readingTimeLocal": "2026-07-05T05:32:11.0"
+            },
+            {
+                "hrvValue": 41,
+                "readingTimeGMT": "2026-07-05T03:37:11.0",
+                "readingTimeLocal": "2026-07-05T05:37:11.0"
+            },
+            {
+                "hrvValue": 36,
+                "readingTimeGMT": "2026-07-05T03:42:11.0",
+                "readingTimeLocal": "2026-07-05T05:42:11.0"
+            },
+            {
+                "hrvValue": 50,
+                "readingTimeGMT": "2026-07-05T03:47:11.0",
+                "readingTimeLocal": "2026-07-05T05:47:11.0"
+            },
+            {
+                "hrvValue": 47,
+                "readingTimeGMT": "2026-07-05T03:52:11.0",
+                "readingTimeLocal": "2026-07-05T05:52:11.0"
+            },
+            {
+                "hrvValue": 40,
+                "readingTimeGMT": "2026-07-05T03:57:11.0",
+                "readingTimeLocal": "2026-07-05T05:57:11.0"
+            },
+            {
+                "hrvValue": 38,
+                "readingTimeGMT": "2026-07-05T04:02:11.0",
+                "readingTimeLocal": "2026-07-05T06:02:11.0"
+            },
+            {
+                "hrvValue": 37,
+                "readingTimeGMT": "2026-07-05T04:07:11.0",
+                "readingTimeLocal": "2026-07-05T06:07:11.0"
+            },
+            {
+                "hrvValue": 44,
+                "readingTimeGMT": "2026-07-05T04:12:11.0",
+                "readingTimeLocal": "2026-07-05T06:12:11.0"
+            },
+            {
+                "hrvValue": 43,
+                "readingTimeGMT": "2026-07-05T04:17:11.0",
+                "readingTimeLocal": "2026-07-05T06:17:11.0"
+            },
+            {
+                "hrvValue": 44,
+                "readingTimeGMT": "2026-07-05T04:22:11.0",
+                "readingTimeLocal": "2026-07-05T06:22:11.0"
+            },
+            {
+                "hrvValue": 42,
+                "readingTimeGMT": "2026-07-05T04:27:11.0",
+                "readingTimeLocal": "2026-07-05T06:27:11.0"
+            },
+            {
+                "hrvValue": 40,
+                "readingTimeGMT": "2026-07-05T04:32:11.0",
+                "readingTimeLocal": "2026-07-05T06:32:11.0"
+            },
+            {
+                "hrvValue": 40,
+                "readingTimeGMT": "2026-07-05T04:37:11.0",
+                "readingTimeLocal": "2026-07-05T06:37:11.0"
+            },
+            {
+                "hrvValue": 42,
+                "readingTimeGMT": "2026-07-05T04:42:11.0",
+                "readingTimeLocal": "2026-07-05T06:42:11.0"
+            },
+            {
+                "hrvValue": 45,
+                "readingTimeGMT": "2026-07-05T04:47:11.0",
+                "readingTimeLocal": "2026-07-05T06:47:11.0"
+            },
+            {
+                "hrvValue": 46,
+                "readingTimeGMT": "2026-07-05T04:52:11.0",
+                "readingTimeLocal": "2026-07-05T06:52:11.0"
+            },
+            {
+                "hrvValue": 48,
+                "readingTimeGMT": "2026-07-05T04:57:11.0",
+                "readingTimeLocal": "2026-07-05T06:57:11.0"
+            },
+            {
+                "hrvValue": 57,
+                "readingTimeGMT": "2026-07-05T05:02:11.0",
+                "readingTimeLocal": "2026-07-05T07:02:11.0"
+            },
+            {
+                "hrvValue": 41,
+                "readingTimeGMT": "2026-07-05T05:07:11.0",
+                "readingTimeLocal": "2026-07-05T07:07:11.0"
+            },
+            {
+                "hrvValue": 42,
+                "readingTimeGMT": "2026-07-05T05:12:11.0",
+                "readingTimeLocal": "2026-07-05T07:12:11.0"
+            },
+            {
+                "hrvValue": 43,
+                "readingTimeGMT": "2026-07-05T05:17:11.0",
+                "readingTimeLocal": "2026-07-05T07:17:11.0"
+            },
+            {
+                "hrvValue": 52,
+                "readingTimeGMT": "2026-07-05T05:22:11.0",
+                "readingTimeLocal": "2026-07-05T07:22:11.0"
+            },
+            {
+                "hrvValue": 38,
+                "readingTimeGMT": "2026-07-05T05:27:11.0",
+                "readingTimeLocal": "2026-07-05T07:27:11.0"
+            },
+            {
+                "hrvValue": 43,
+                "readingTimeGMT": "2026-07-05T05:32:11.0",
+                "readingTimeLocal": "2026-07-05T07:32:11.0"
+            },
+            {
+                "hrvValue": 49,
+                "readingTimeGMT": "2026-07-05T05:37:11.0",
+                "readingTimeLocal": "2026-07-05T07:37:11.0"
+            },
+            {
+                "hrvValue": 49,
+                "readingTimeGMT": "2026-07-05T05:42:11.0",
+                "readingTimeLocal": "2026-07-05T07:42:11.0"
+            },
+            {
+                "hrvValue": 44,
+                "readingTimeGMT": "2026-07-05T05:47:11.0",
+                "readingTimeLocal": "2026-07-05T07:47:11.0"
+            },
+            {
+                "hrvValue": 61,
+                "readingTimeGMT": "2026-07-05T05:52:11.0",
+                "readingTimeLocal": "2026-07-05T07:52:11.0"
+            },
+            {
+                "hrvValue": 39,
+                "readingTimeGMT": "2026-07-05T05:57:11.0",
+                "readingTimeLocal": "2026-07-05T07:57:11.0"
+            },
+            {
+                "hrvValue": 49,
+                "readingTimeGMT": "2026-07-05T06:02:11.0",
+                "readingTimeLocal": "2026-07-05T08:02:11.0"
+            },
+            {
+                "hrvValue": 48,
+                "readingTimeGMT": "2026-07-05T06:07:11.0",
+                "readingTimeLocal": "2026-07-05T08:07:11.0"
+            },
+            {
+                "hrvValue": 46,
+                "readingTimeGMT": "2026-07-05T06:12:11.0",
+                "readingTimeLocal": "2026-07-05T08:12:11.0"
+            },
+            {
+                "hrvValue": 48,
+                "readingTimeGMT": "2026-07-05T06:17:11.0",
+                "readingTimeLocal": "2026-07-05T08:17:11.0"
+            },
+            {
+                "hrvValue": 47,
+                "readingTimeGMT": "2026-07-05T06:22:11.0",
+                "readingTimeLocal": "2026-07-05T08:22:11.0"
+            },
+            {
+                "hrvValue": 47,
+                "readingTimeGMT": "2026-07-05T06:27:11.0",
+                "readingTimeLocal": "2026-07-05T08:27:11.0"
+            }
+        ],
+        "startTimestampGMT": "2026-07-05T00:29:04.0",
+        "endTimestampGMT": "2026-07-05T06:27:11.0",
+        "startTimestampLocal": "2026-07-05T02:29:04.0",
+        "endTimestampLocal": "2026-07-05T08:27:11.0",
+        "sleepStartTimestampGMT": "2026-07-05T00:29:04.0",
+        "sleepEndTimestampGMT": "2026-07-05T06:31:04.0",
+        "sleepStartTimestampLocal": "2026-07-05T02:29:04.0",
+        "sleepEndTimestampLocal": "2026-07-05T08:31:04.0"
+    },
+    "heart_rates": {
+        "userProfilePK": 147275445,
+        "calendarDate": "2026-07-05",
+        "startTimestampGMT": "2026-07-04T22:00:00.0",
+        "endTimestampGMT": "2026-07-05T22:00:00.0",
+        "startTimestampLocal": "2026-07-05T00:00:00.0",
+        "endTimestampLocal": "2026-07-06T00:00:00.0",
+        "maxHeartRate": 154,
+        "minHeartRate": 55,
+        "restingHeartRate": 58,
+        "lastSevenDaysAvgRestingHeartRate": 57,
+        "heartRateValueDescriptors": [
+            {
+                "index": 0,
+                "key": "timestamp"
+            },
+            {
+                "index": 1,
+                "key": "heartrate"
+            }
+        ],
+        "heartRateValues": [
+            [
+                1783202400000,
+                66
+            ],
+            [
+                1783202520000,
+                66
+            ],
+            [
+                1783202640000,
+                67
+            ],
+            [
+                1783202760000,
+                68
+            ],
+            [
+                1783202880000,
+                68
+            ],
+            [
+                1783203000000,
+                66
+            ],
+            [
+                1783203120000,
+                64
+            ],
+            [
+                1783203240000,
+                70
+            ],
+            [
+                1783203360000,
+                67
+            ],
+            [
+                1783203480000,
+                68
+            ],
+            [
+                1783203600000,
+                68
+            ],
+            [
+                1783203720000,
+                73
+            ],
+            [
+                1783203840000,
+                71
+            ],
+            [
+                1783203960000,
+                66
+            ],
+            [
+                1783204080000,
+                68
+            ],
+            [
+                1783204200000,
+                63
+            ],
+            [
+                1783204320000,
+                78
+            ],
+            [
+                1783204440000,
+                86
+            ],
+            [
+                1783204560000,
+                87
+            ],
+            [
+                1783204680000,
+                86
+            ],
+            [
+                1783204800000,
+                73
+            ],
+            [
+                1783204920000,
+                80
+            ],
+            [
+                1783205040000,
+                68
+            ],
+            [
+                1783205160000,
+                62
+            ],
+            [
+                1783205280000,
+                66
+            ],
+            [
+                1783205400000,
+                65
+            ],
+            [
+                1783205520000,
+                65
+            ],
+            [
+                1783205640000,
+                64
+            ],
+            [
+                1783205760000,
+                66
+            ],
+            [
+                1783205880000,
+                65
+            ],
+            [
+                1783206000000,
+                68
+            ],
+            [
+                1783206120000,
+                72
+            ],
+            [
+                1783206240000,
+                63
+            ],
+            [
+                1783206360000,
+                65
+            ],
+            [
+                1783206480000,
+                70
+            ],
+            [
+                1783206600000,
+                68
+            ],
+            [
+                1783206720000,
+                69
+            ],
+            [
+                1783206840000,
+                72
+            ],
+            [
+                1783206960000,
+                72
+            ],
+            [
+                1783207080000,
+                74
+            ],
+            [
+                1783207200000,
+                75
+            ],
+            [
+                1783207320000,
+                73
+            ],
+            [
+                1783207440000,
+                80
+            ],
+            [
+                1783207560000,
+                82
+            ],
+            [
+                1783207680000,
+                82
+            ],
+            [
+                1783207800000,
+                77
+            ],
+            [
+                1783207920000,
+                70
+            ],
+            [
+                1783208040000,
+                68
+            ],
+            [
+                1783208160000,
+                65
+            ],
+            [
+                1783208280000,
+                70
+            ],
+            [
+                1783208400000,
+                67
+            ],
+            [
+                1783208520000,
+                86
+            ],
+            [
+                1783208640000,
+                85
+            ],
+            [
+                1783208760000,
+                76
+            ],
+            [
+                1783208880000,
+                68
+            ],
+            [
+                1783209000000,
+                66
+            ],
+            [
+                1783209120000,
+                65
+            ],
+            [
+                1783209240000,
+                64
+            ],
+            [
+                1783209360000,
+                66
+            ],
+            [
+                1783209480000,
+                66
+            ],
+            [
+                1783209600000,
+                68
+            ],
+            [
+                1783209720000,
+                65
+            ],
+            [
+                1783209840000,
+                63
+            ],
+            [
+                1783209960000,
+                65
+            ],
+            [
+                1783210080000,
+                62
+            ],
+            [
+                1783210200000,
+                63
+            ],
+            [
+                1783210320000,
+                64
+            ],
+            [
+                1783210440000,
+                87
+            ],
+            [
+                1783210560000,
+                76
+            ],
+            [
+                1783210680000,
+                75
+            ],
+            [
+                1783210800000,
+                67
+            ],
+            [
+                1783210920000,
+                64
+            ],
+            [
+                1783211040000,
+                63
+            ],
+            [
+                1783211160000,
+                62
+            ],
+            [
+                1783211280000,
+                64
+            ],
+            [
+                1783211400000,
+                62
+            ],
+            [
+                1783211520000,
+                61
+            ],
+            [
+                1783211640000,
+                63
+            ],
+            [
+                1783211760000,
+                63
+            ],
+            [
+                1783211880000,
+                63
+            ],
+            [
+                1783212000000,
+                63
+            ],
+            [
+                1783212120000,
+                63
+            ],
+            [
+                1783212240000,
+                62
+            ],
+            [
+                1783212360000,
+                62
+            ],
+            [
+                1783212480000,
+                63
+            ],
+            [
+                1783212600000,
+                65
+            ],
+            [
+                1783212720000,
+                62
+            ],
+            [
+                1783212840000,
+                63
+            ],
+            [
+                1783212960000,
+                62
+            ],
+            [
+                1783213080000,
+                64
+            ],
+            [
+                1783213200000,
+                62
+            ],
+            [
+                1783213320000,
+                63
+            ],
+            [
+                1783213440000,
+                63
+            ],
+            [
+                1783213560000,
+                64
+            ],
+            [
+                1783213680000,
+                64
+            ],
+            [
+                1783213800000,
+                64
+            ],
+            [
+                1783213920000,
+                64
+            ],
+            [
+                1783214040000,
+                66
+            ],
+            [
+                1783214160000,
+                63
+            ],
+            [
+                1783214280000,
+                63
+            ],
+            [
+                1783214400000,
+                66
+            ],
+            [
+                1783214520000,
+                64
+            ],
+            [
+                1783214640000,
+                71
+            ],
+            [
+                1783214760000,
+                83
+            ],
+            [
+                1783214880000,
+                63
+            ],
+            [
+                1783215000000,
+                63
+            ],
+            [
+                1783215120000,
+                63
+            ],
+            [
+                1783215240000,
+                64
+            ],
+            [
+                1783215360000,
+                71
+            ],
+            [
+                1783215480000,
+                70
+            ],
+            [
+                1783215600000,
+                70
+            ],
+            [
+                1783215720000,
+                68
+            ],
+            [
+                1783215840000,
+                70
+            ],
+            [
+                1783215960000,
+                71
+            ],
+            [
+                1783216080000,
+                71
+            ],
+            [
+                1783216200000,
+                68
+            ],
+            [
+                1783216320000,
+                65
+            ],
+            [
+                1783216440000,
+                66
+            ],
+            [
+                1783216560000,
+                69
+            ],
+            [
+                1783216680000,
+                68
+            ],
+            [
+                1783216800000,
+                67
+            ],
+            [
+                1783216920000,
+                77
+            ],
+            [
+                1783217040000,
+                75
+            ],
+            [
+                1783217160000,
+                69
+            ],
+            [
+                1783217280000,
+                69
+            ],
+            [
+                1783217400000,
+                66
+            ],
+            [
+                1783217520000,
+                69
+            ],
+            [
+                1783217640000,
+                73
+            ],
+            [
+                1783217760000,
+                69
+            ],
+            [
+                1783217880000,
+                69
+            ],
+            [
+                1783218000000,
+                66
+            ],
+            [
+                1783218120000,
+                68
+            ],
+            [
+                1783218240000,
+                67
+            ],
+            [
+                1783218360000,
+                68
+            ],
+            [
+                1783218480000,
+                68
+            ],
+            [
+                1783218600000,
+                66
+            ],
+            [
+                1783218720000,
+                67
+            ],
+            [
+                1783218840000,
+                66
+            ],
+            [
+                1783218960000,
+                66
+            ],
+            [
+                1783219080000,
+                65
+            ],
+            [
+                1783219200000,
+                65
+            ],
+            [
+                1783219320000,
+                64
+            ],
+            [
+                1783219440000,
+                63
+            ],
+            [
+                1783219560000,
+                63
+            ],
+            [
+                1783219680000,
+                62
+            ],
+            [
+                1783219800000,
+                62
+            ],
+            [
+                1783219920000,
+                61
+            ],
+            [
+                1783220040000,
+                62
+            ],
+            [
+                1783220160000,
+                62
+            ],
+            [
+                1783220280000,
+                61
+            ],
+            [
+                1783220400000,
+                61
+            ],
+            [
+                1783220520000,
+                61
+            ],
+            [
+                1783220640000,
+                60
+            ],
+            [
+                1783220760000,
+                60
+            ],
+            [
+                1783220880000,
+                61
+            ],
+            [
+                1783221000000,
+                64
+            ],
+            [
+                1783221120000,
+                61
+            ],
+            [
+                1783221240000,
+                61
+            ],
+            [
+                1783221360000,
+                60
+            ],
+            [
+                1783221480000,
+                61
+            ],
+            [
+                1783221600000,
+                61
+            ],
+            [
+                1783221720000,
+                61
+            ],
+            [
+                1783221840000,
+                61
+            ],
+            [
+                1783221960000,
+                61
+            ],
+            [
+                1783222080000,
+                61
+            ],
+            [
+                1783222200000,
+                62
+            ],
+            [
+                1783222320000,
+                62
+            ],
+            [
+                1783222440000,
+                61
+            ],
+            [
+                1783222560000,
+                61
+            ],
+            [
+                1783222680000,
+                62
+            ],
+            [
+                1783222800000,
+                63
+            ],
+            [
+                1783222920000,
+                62
+            ],
+            [
+                1783223040000,
+                61
+            ],
+            [
+                1783223160000,
+                68
+            ],
+            [
+                1783223280000,
+                62
+            ],
+            [
+                1783223400000,
+                63
+            ],
+            [
+                1783223520000,
+                62
+            ],
+            [
+                1783223640000,
+                62
+            ],
+            [
+                1783223760000,
+                61
+            ],
+            [
+                1783223880000,
+                65
+            ],
+            [
+                1783224000000,
+                60
+            ],
+            [
+                1783224120000,
+                63
+            ],
+            [
+                1783224240000,
+                60
+            ],
+            [
+                1783224360000,
+                62
+            ],
+            [
+                1783224480000,
+                61
+            ],
+            [
+                1783224600000,
+                61
+            ],
+            [
+                1783224720000,
+                60
+            ],
+            [
+                1783224840000,
+                59
+            ],
+            [
+                1783224960000,
+                61
+            ],
+            [
+                1783225080000,
+                60
+            ],
+            [
+                1783225200000,
+                59
+            ],
+            [
+                1783225320000,
+                62
+            ],
+            [
+                1783225440000,
+                60
+            ],
+            [
+                1783225560000,
+                60
+            ],
+            [
+                1783225680000,
+                60
+            ],
+            [
+                1783225800000,
+                59
+            ],
+            [
+                1783225920000,
+                60
+            ],
+            [
+                1783226040000,
+                59
+            ],
+            [
+                1783226160000,
+                60
+            ],
+            [
+                1783226280000,
+                59
+            ],
+            [
+                1783226400000,
+                59
+            ],
+            [
+                1783226520000,
+                59
+            ],
+            [
+                1783226640000,
+                58
+            ],
+            [
+                1783226760000,
+                58
+            ],
+            [
+                1783226880000,
+                58
+            ],
+            [
+                1783227000000,
+                58
+            ],
+            [
+                1783227120000,
+                57
+            ],
+            [
+                1783227240000,
+                57
+            ],
+            [
+                1783227360000,
+                58
+            ],
+            [
+                1783227480000,
+                56
+            ],
+            [
+                1783227600000,
+                60
+            ],
+            [
+                1783227720000,
+                57
+            ],
+            [
+                1783227840000,
+                63
+            ],
+            [
+                1783227960000,
+                60
+            ],
+            [
+                1783228080000,
+                63
+            ],
+            [
+                1783228200000,
+                60
+            ],
+            [
+                1783228320000,
+                60
+            ],
+            [
+                1783228440000,
+                62
+            ],
+            [
+                1783228560000,
+                63
+            ],
+            [
+                1783228680000,
+                60
+            ],
+            [
+                1783228800000,
+                60
+            ],
+            [
+                1783228920000,
+                57
+            ],
+            [
+                1783229040000,
+                60
+            ],
+            [
+                1783229160000,
+                67
+            ],
+            [
+                1783229280000,
+                59
+            ],
+            [
+                1783229400000,
+                61
+            ],
+            [
+                1783229520000,
+                60
+            ],
+            [
+                1783229640000,
+                59
+            ],
+            [
+                1783229760000,
+                62
+            ],
+            [
+                1783229880000,
+                59
+            ],
+            [
+                1783230000000,
+                63
+            ],
+            [
+                1783230120000,
+                58
+            ],
+            [
+                1783230240000,
+                62
+            ],
+            [
+                1783230360000,
+                63
+            ],
+            [
+                1783230480000,
+                55
+            ],
+            [
+                1783230600000,
+                58
+            ],
+            [
+                1783230720000,
+                58
+            ],
+            [
+                1783230840000,
+                60
+            ],
+            [
+                1783230960000,
+                68
+            ],
+            [
+                1783231080000,
+                61
+            ],
+            [
+                1783231200000,
+                66
+            ],
+            [
+                1783231320000,
+                61
+            ],
+            [
+                1783231440000,
+                62
+            ],
+            [
+                1783231560000,
+                59
+            ],
+            [
+                1783231680000,
+                62
+            ],
+            [
+                1783231800000,
+                61
+            ],
+            [
+                1783231920000,
+                62
+            ],
+            [
+                1783232040000,
+                61
+            ],
+            [
+                1783232160000,
+                60
+            ],
+            [
+                1783232280000,
+                60
+            ],
+            [
+                1783232400000,
+                61
+            ],
+            [
+                1783232520000,
+                62
+            ],
+            [
+                1783232640000,
+                62
+            ],
+            [
+                1783232760000,
+                56
+            ],
+            [
+                1783232880000,
+                57
+            ],
+            [
+                1783233000000,
+                55
+            ],
+            [
+                1783233120000,
+                59
+            ],
+            [
+                1783233240000,
+                56
+            ],
+            [
+                1783233360000,
+                65
+            ],
+            [
+                1783233480000,
+                72
+            ],
+            [
+                1783233600000,
+                85
+            ],
+            [
+                1783233720000,
+                82
+            ],
+            [
+                1783233840000,
+                82
+            ],
+            [
+                1783233960000,
+                84
+            ],
+            [
+                1783234080000,
+                68
+            ],
+            [
+                1783234200000,
+                64
+            ],
+            [
+                1783234320000,
+                81
+            ],
+            [
+                1783234440000,
+                93
+            ],
+            [
+                1783234560000,
+                92
+            ],
+            [
+                1783234680000,
+                126
+            ],
+            [
+                1783234800000,
+                138
+            ],
+            [
+                1783234920000,
+                146
+            ],
+            [
+                1783235040000,
+                151
+            ],
+            [
+                1783235160000,
+                141
+            ],
+            [
+                1783235280000,
+                148
+            ],
+            [
+                1783235400000,
+                152
+            ],
+            [
+                1783235520000,
+                153
+            ],
+            [
+                1783235640000,
+                139
+            ],
+            [
+                1783235760000,
+                151
+            ],
+            [
+                1783235880000,
+                151
+            ],
+            [
+                1783236000000,
+                154
+            ],
+            [
+                1783236120000,
+                142
+            ],
+            [
+                1783236240000,
+                152
+            ],
+            [
+                1783236360000,
+                152
+            ],
+            [
+                1783236480000,
+                140
+            ],
+            [
+                1783236600000,
+                149
+            ],
+            [
+                1783236720000,
+                150
+            ],
+            [
+                1783236840000,
+                138
+            ],
+            [
+                1783236960000,
+                153
+            ],
+            [
+                1783237080000,
+                142
+            ],
+            [
+                1783237200000,
+                147
+            ],
+            [
+                1783237320000,
+                141
+            ],
+            [
+                1783237440000,
+                146
+            ],
+            [
+                1783237560000,
+                147
+            ],
+            [
+                1783237680000,
+                142
+            ],
+            [
+                1783237800000,
+                147
+            ],
+            [
+                1783237920000,
+                141
+            ],
+            [
+                1783238040000,
+                150
+            ],
+            [
+                1783238160000,
+                138
+            ],
+            [
+                1783238280000,
+                153
+            ],
+            [
+                1783238400000,
+                152
+            ],
+            [
+                1783238520000,
+                139
+            ],
+            [
+                1783238640000,
+                153
+            ],
+            [
+                1783238760000,
+                140
+            ],
+            [
+                1783238880000,
+                152
+            ],
+            [
+                1783239000000,
+                142
+            ],
+            [
+                1783239120000,
+                149
+            ],
+            [
+                1783239240000,
+                141
+            ],
+            [
+                1783239360000,
+                143
+            ],
+            [
+                1783239480000,
+                149
+            ],
+            [
+                1783239600000,
+                139
+            ],
+            [
+                1783239720000,
+                147
+            ],
+            [
+                1783239840000,
+                143
+            ],
+            [
+                1783239960000,
+                132
+            ],
+            [
+                1783240080000,
+                150
+            ],
+            [
+                1783240200000,
+                141
+            ],
+            [
+                1783240320000,
+                148
+            ],
+            [
+                1783240440000,
+                147
+            ],
+            [
+                1783240560000,
+                140
+            ],
+            [
+                1783240680000,
+                151
+            ],
+            [
+                1783240800000,
+                139
+            ],
+            [
+                1783240920000,
+                121
+            ],
+            [
+                1783241040000,
+                105
+            ],
+            [
+                1783241160000,
+                101
+            ],
+            [
+                1783241280000,
+                105
+            ],
+            [
+                1783241400000,
+                99
+            ],
+            [
+                1783241520000,
+                98
+            ],
+            [
+                1783241880000,
+                null
+            ],
+            [
+                1783242000000,
+                91
+            ],
+            [
+                1783242120000,
+                102
+            ],
+            [
+                1783242240000,
+                108
+            ],
+            [
+                1783242360000,
+                108
+            ],
+            [
+                1783242480000,
+                103
+            ],
+            [
+                1783242600000,
+                92
+            ],
+            [
+                1783242720000,
+                101
+            ],
+            [
+                1783242840000,
+                102
+            ],
+            [
+                1783242960000,
+                107
+            ],
+            [
+                1783243080000,
+                109
+            ],
+            [
+                1783243200000,
+                101
+            ],
+            [
+                1783243320000,
+                110
+            ],
+            [
+                1783243440000,
+                110
+            ],
+            [
+                1783243560000,
+                110
+            ],
+            [
+                1783243680000,
+                115
+            ],
+            [
+                1783243800000,
+                108
+            ],
+            [
+                1783243920000,
+                98
+            ],
+            [
+                1783244040000,
+                95
+            ],
+            [
+                1783244160000,
+                101
+            ],
+            [
+                1783244280000,
+                99
+            ],
+            [
+                1783244400000,
+                93
+            ],
+            [
+                1783244520000,
+                92
+            ],
+            [
+                1783244640000,
+                92
+            ],
+            [
+                1783244760000,
+                95
+            ],
+            [
+                1783244880000,
+                91
+            ],
+            [
+                1783245000000,
+                99
+            ],
+            [
+                1783245120000,
+                96
+            ],
+            [
+                1783245240000,
+                108
+            ],
+            [
+                1783245360000,
+                99
+            ],
+            [
+                1783245480000,
+                97
+            ],
+            [
+                1783245600000,
+                98
+            ],
+            [
+                1783245720000,
+                97
+            ],
+            [
+                1783245840000,
+                95
+            ],
+            [
+                1783245960000,
+                97
+            ],
+            [
+                1783246080000,
+                92
+            ],
+            [
+                1783246200000,
+                97
+            ],
+            [
+                1783246320000,
+                93
+            ],
+            [
+                1783246440000,
+                92
+            ],
+            [
+                1783246560000,
+                92
+            ],
+            [
+                1783246680000,
+                96
+            ],
+            [
+                1783246800000,
+                90
+            ],
+            [
+                1783246920000,
+                97
+            ],
+            [
+                1783247040000,
+                101
+            ],
+            [
+                1783247160000,
+                102
+            ],
+            [
+                1783247280000,
+                104
+            ],
+            [
+                1783247400000,
+                102
+            ],
+            [
+                1783247520000,
+                109
+            ],
+            [
+                1783247640000,
+                113
+            ],
+            [
+                1783247760000,
+                109
+            ],
+            [
+                1783247880000,
+                104
+            ],
+            [
+                1783248000000,
+                100
+            ],
+            [
+                1783248120000,
+                91
+            ],
+            [
+                1783248240000,
+                84
+            ],
+            [
+                1783248360000,
+                88
+            ],
+            [
+                1783248480000,
+                92
+            ],
+            [
+                1783248600000,
+                96
+            ],
+            [
+                1783248720000,
+                102
+            ],
+            [
+                1783248840000,
+                100
+            ],
+            [
+                1783248960000,
+                104
+            ],
+            [
+                1783249080000,
+                104
+            ],
+            [
+                1783249200000,
+                106
+            ],
+            [
+                1783249320000,
+                103
+            ],
+            [
+                1783249440000,
+                89
+            ],
+            [
+                1783249560000,
+                89
+            ],
+            [
+                1783249680000,
+                90
+            ],
+            [
+                1783249800000,
+                94
+            ],
+            [
+                1783249920000,
+                101
+            ],
+            [
+                1783250040000,
+                99
+            ],
+            [
+                1783250160000,
+                105
+            ],
+            [
+                1783250280000,
+                105
+            ],
+            [
+                1783250400000,
+                97
+            ],
+            [
+                1783250520000,
+                96
+            ],
+            [
+                1783250640000,
+                93
+            ],
+            [
+                1783250760000,
+                95
+            ],
+            [
+                1783250880000,
+                94
+            ],
+            [
+                1783251000000,
+                92
+            ],
+            [
+                1783251120000,
+                93
+            ],
+            [
+                1783251240000,
+                90
+            ],
+            [
+                1783251360000,
+                90
+            ],
+            [
+                1783251480000,
+                88
+            ],
+            [
+                1783251600000,
+                91
+            ],
+            [
+                1783251720000,
+                91
+            ],
+            [
+                1783251840000,
+                91
+            ],
+            [
+                1783251960000,
+                89
+            ],
+            [
+                1783252080000,
+                92
+            ],
+            [
+                1783252200000,
+                99
+            ],
+            [
+                1783252320000,
+                87
+            ],
+            [
+                1783252440000,
+                88
+            ],
+            [
+                1783252560000,
+                93
+            ],
+            [
+                1783252680000,
+                87
+            ],
+            [
+                1783252800000,
+                87
+            ],
+            [
+                1783252920000,
+                87
+            ],
+            [
+                1783253040000,
+                86
+            ],
+            [
+                1783253160000,
+                86
+            ],
+            [
+                1783253280000,
+                85
+            ],
+            [
+                1783253400000,
+                85
+            ],
+            [
+                1783253520000,
+                85
+            ],
+            [
+                1783253640000,
+                87
+            ],
+            [
+                1783253760000,
+                87
+            ],
+            [
+                1783253880000,
+                83
+            ],
+            [
+                1783254000000,
+                88
+            ],
+            [
+                1783254120000,
+                105
+            ],
+            [
+                1783254240000,
+                102
+            ],
+            [
+                1783254360000,
+                90
+            ],
+            [
+                1783254480000,
+                86
+            ],
+            [
+                1783254600000,
+                86
+            ],
+            [
+                1783254720000,
+                80
+            ],
+            [
+                1783254840000,
+                86
+            ],
+            [
+                1783254960000,
+                85
+            ],
+            [
+                1783255080000,
+                83
+            ],
+            [
+                1783255200000,
+                86
+            ],
+            [
+                1783255320000,
+                85
+            ],
+            [
+                1783255440000,
+                83
+            ],
+            [
+                1783255560000,
+                80
+            ],
+            [
+                1783255680000,
+                79
+            ],
+            [
+                1783255800000,
+                81
+            ],
+            [
+                1783255920000,
+                79
+            ],
+            [
+                1783256040000,
+                77
+            ],
+            [
+                1783256160000,
+                81
+            ],
+            [
+                1783256280000,
+                80
+            ],
+            [
+                1783256400000,
+                78
+            ],
+            [
+                1783256520000,
+                78
+            ],
+            [
+                1783256640000,
+                87
+            ],
+            [
+                1783256760000,
+                79
+            ],
+            [
+                1783256880000,
+                79
+            ],
+            [
+                1783257000000,
+                76
+            ],
+            [
+                1783257120000,
+                79
+            ],
+            [
+                1783257240000,
+                81
+            ],
+            [
+                1783257360000,
+                74
+            ],
+            [
+                1783257480000,
+                75
+            ],
+            [
+                1783257600000,
+                82
+            ],
+            [
+                1783257720000,
+                82
+            ],
+            [
+                1783257840000,
+                77
+            ],
+            [
+                1783257960000,
+                80
+            ],
+            [
+                1783258080000,
+                87
+            ],
+            [
+                1783258200000,
+                91
+            ],
+            [
+                1783258320000,
+                92
+            ],
+            [
+                1783258440000,
+                94
+            ],
+            [
+                1783258560000,
+                91
+            ],
+            [
+                1783258680000,
+                106
+            ],
+            [
+                1783258800000,
+                100
+            ],
+            [
+                1783258920000,
+                90
+            ],
+            [
+                1783259040000,
+                84
+            ],
+            [
+                1783259160000,
+                79
+            ],
+            [
+                1783259280000,
+                83
+            ],
+            [
+                1783259400000,
+                80
+            ],
+            [
+                1783259520000,
+                83
+            ],
+            [
+                1783259640000,
+                84
+            ],
+            [
+                1783259760000,
+                80
+            ],
+            [
+                1783259880000,
+                75
+            ],
+            [
+                1783260000000,
+                73
+            ],
+            [
+                1783260120000,
+                75
+            ],
+            [
+                1783260240000,
+                76
+            ],
+            [
+                1783260360000,
+                106
+            ],
+            [
+                1783260480000,
+                96
+            ],
+            [
+                1783260600000,
+                80
+            ],
+            [
+                1783260720000,
+                81
+            ],
+            [
+                1783260840000,
+                82
+            ],
+            [
+                1783260960000,
+                90
+            ],
+            [
+                1783261080000,
+                97
+            ],
+            [
+                1783261200000,
+                91
+            ],
+            [
+                1783261320000,
+                82
+            ],
+            [
+                1783261440000,
+                83
+            ],
+            [
+                1783261560000,
+                91
+            ],
+            [
+                1783261680000,
+                90
+            ],
+            [
+                1783261800000,
+                91
+            ],
+            [
+                1783261920000,
+                91
+            ],
+            [
+                1783262040000,
+                89
+            ],
+            [
+                1783262160000,
+                90
+            ],
+            [
+                1783262280000,
+                91
+            ],
+            [
+                1783262400000,
+                92
+            ],
+            [
+                1783262520000,
+                89
+            ],
+            [
+                1783262640000,
+                87
+            ],
+            [
+                1783262760000,
+                90
+            ],
+            [
+                1783262880000,
+                87
+            ],
+            [
+                1783263000000,
+                84
+            ],
+            [
+                1783263120000,
+                87
+            ],
+            [
+                1783263240000,
+                86
+            ],
+            [
+                1783263360000,
+                84
+            ],
+            [
+                1783263480000,
+                81
+            ],
+            [
+                1783263600000,
+                85
+            ],
+            [
+                1783263720000,
+                88
+            ],
+            [
+                1783263840000,
+                88
+            ],
+            [
+                1783263960000,
+                85
+            ],
+            [
+                1783264080000,
+                86
+            ],
+            [
+                1783264200000,
+                88
+            ],
+            [
+                1783264320000,
+                94
+            ],
+            [
+                1783264440000,
+                87
+            ],
+            [
+                1783264560000,
+                90
+            ],
+            [
+                1783264680000,
+                86
+            ],
+            [
+                1783264800000,
+                85
+            ],
+            [
+                1783264920000,
+                85
+            ],
+            [
+                1783265040000,
+                83
+            ],
+            [
+                1783265160000,
+                80
+            ],
+            [
+                1783265280000,
+                82
+            ],
+            [
+                1783265400000,
+                80
+            ],
+            [
+                1783265520000,
+                84
+            ],
+            [
+                1783265640000,
+                83
+            ],
+            [
+                1783265760000,
+                83
+            ],
+            [
+                1783265880000,
+                81
+            ],
+            [
+                1783266000000,
+                80
+            ],
+            [
+                1783266120000,
+                80
+            ],
+            [
+                1783266240000,
+                80
+            ],
+            [
+                1783266360000,
+                85
+            ],
+            [
+                1783266480000,
+                86
+            ],
+            [
+                1783266600000,
+                87
+            ],
+            [
+                1783266720000,
+                86
+            ],
+            [
+                1783266840000,
+                81
+            ],
+            [
+                1783266960000,
+                76
+            ],
+            [
+                1783267080000,
+                81
+            ],
+            [
+                1783267200000,
+                83
+            ],
+            [
+                1783267320000,
+                80
+            ],
+            [
+                1783267440000,
+                79
+            ],
+            [
+                1783267560000,
+                79
+            ],
+            [
+                1783267680000,
+                80
+            ],
+            [
+                1783267800000,
+                87
+            ],
+            [
+                1783267920000,
+                102
+            ],
+            [
+                1783268040000,
+                82
+            ],
+            [
+                1783268160000,
+                74
+            ],
+            [
+                1783268280000,
+                74
+            ],
+            [
+                1783268400000,
+                77
+            ],
+            [
+                1783268520000,
+                81
+            ],
+            [
+                1783268640000,
+                80
+            ],
+            [
+                1783268760000,
+                75
+            ],
+            [
+                1783268880000,
+                74
+            ],
+            [
+                1783269000000,
+                74
+            ],
+            [
+                1783269120000,
+                73
+            ],
+            [
+                1783269240000,
+                70
+            ],
+            [
+                1783269360000,
+                74
+            ],
+            [
+                1783269480000,
+                73
+            ],
+            [
+                1783269600000,
+                72
+            ],
+            [
+                1783269720000,
+                73
+            ],
+            [
+                1783269840000,
+                71
+            ],
+            [
+                1783269960000,
+                73
+            ],
+            [
+                1783270080000,
+                72
+            ],
+            [
+                1783270200000,
+                77
+            ],
+            [
+                1783270320000,
+                73
+            ],
+            [
+                1783270440000,
+                79
+            ],
+            [
+                1783270560000,
+                73
+            ],
+            [
+                1783270680000,
+                75
+            ],
+            [
+                1783270800000,
+                77
+            ],
+            [
+                1783270920000,
+                74
+            ],
+            [
+                1783271040000,
+                74
+            ],
+            [
+                1783271160000,
+                78
+            ],
+            [
+                1783271280000,
+                77
+            ],
+            [
+                1783271400000,
+                73
+            ],
+            [
+                1783271520000,
+                73
+            ],
+            [
+                1783271640000,
+                71
+            ],
+            [
+                1783271760000,
+                75
+            ],
+            [
+                1783271880000,
+                75
+            ],
+            [
+                1783272000000,
+                75
+            ],
+            [
+                1783272120000,
+                77
+            ],
+            [
+                1783272240000,
+                76
+            ],
+            [
+                1783272360000,
+                92
+            ],
+            [
+                1783272480000,
+                101
+            ],
+            [
+                1783272600000,
+                88
+            ],
+            [
+                1783272720000,
+                80
+            ],
+            [
+                1783272840000,
+                75
+            ],
+            [
+                1783272960000,
+                79
+            ],
+            [
+                1783273080000,
+                81
+            ],
+            [
+                1783273200000,
+                79
+            ],
+            [
+                1783273320000,
+                87
+            ],
+            [
+                1783273440000,
+                87
+            ],
+            [
+                1783273560000,
+                85
+            ],
+            [
+                1783273680000,
+                86
+            ],
+            [
+                1783273800000,
+                90
+            ],
+            [
+                1783273920000,
+                85
+            ],
+            [
+                1783274040000,
+                90
+            ],
+            [
+                1783274160000,
+                94
+            ],
+            [
+                1783274280000,
+                92
+            ],
+            [
+                1783274400000,
+                91
+            ],
+            [
+                1783274520000,
+                92
+            ],
+            [
+                1783274640000,
+                88
+            ],
+            [
+                1783274760000,
+                85
+            ],
+            [
+                1783274880000,
+                81
+            ],
+            [
+                1783275000000,
+                82
+            ],
+            [
+                1783275120000,
+                82
+            ],
+            [
+                1783275240000,
+                80
+            ],
+            [
+                1783275360000,
+                93
+            ],
+            [
+                1783275480000,
+                87
+            ],
+            [
+                1783275600000,
+                81
+            ],
+            [
+                1783275720000,
+                87
+            ],
+            [
+                1783275840000,
+                89
+            ],
+            [
+                1783275960000,
+                85
+            ],
+            [
+                1783276080000,
+                84
+            ],
+            [
+                1783276200000,
+                82
+            ],
+            [
+                1783276320000,
+                83
+            ],
+            [
+                1783276440000,
+                82
+            ],
+            [
+                1783276560000,
+                77
+            ],
+            [
+                1783276680000,
+                76
+            ],
+            [
+                1783276800000,
+                78
+            ],
+            [
+                1783276920000,
+                78
+            ],
+            [
+                1783277040000,
+                79
+            ],
+            [
+                1783277160000,
+                80
+            ],
+            [
+                1783277280000,
+                77
+            ],
+            [
+                1783277400000,
+                77
+            ],
+            [
+                1783277520000,
+                76
+            ],
+            [
+                1783277640000,
+                77
+            ],
+            [
+                1783277760000,
+                77
+            ],
+            [
+                1783277880000,
+                78
+            ],
+            [
+                1783278000000,
+                79
+            ],
+            [
+                1783278120000,
+                76
+            ],
+            [
+                1783278240000,
+                76
+            ],
+            [
+                1783278360000,
+                80
+            ],
+            [
+                1783278480000,
+                76
+            ],
+            [
+                1783278600000,
+                77
+            ],
+            [
+                1783278720000,
+                86
+            ],
+            [
+                1783278840000,
+                110
+            ],
+            [
+                1783278960000,
+                87
+            ],
+            [
+                1783279080000,
+                82
+            ],
+            [
+                1783279200000,
+                77
+            ],
+            [
+                1783279320000,
+                83
+            ],
+            [
+                1783279440000,
+                76
+            ],
+            [
+                1783279560000,
+                81
+            ],
+            [
+                1783279680000,
+                79
+            ],
+            [
+                1783279800000,
+                71
+            ],
+            [
+                1783279920000,
+                75
+            ],
+            [
+                1783280040000,
+                71
+            ],
+            [
+                1783280160000,
+                71
+            ],
+            [
+                1783280280000,
+                70
+            ],
+            [
+                1783280400000,
+                68
+            ],
+            [
+                1783280520000,
+                73
+            ],
+            [
+                1783280640000,
+                80
+            ],
+            [
+                1783280760000,
+                73
+            ],
+            [
+                1783280880000,
+                72
+            ],
+            [
+                1783281000000,
+                68
+            ],
+            [
+                1783281120000,
+                71
+            ],
+            [
+                1783281240000,
+                72
+            ],
+            [
+                1783281360000,
+                70
+            ],
+            [
+                1783281480000,
+                75
+            ],
+            [
+                1783281600000,
+                76
+            ],
+            [
+                1783281720000,
+                75
+            ],
+            [
+                1783281840000,
+                69
+            ],
+            [
+                1783281960000,
+                74
+            ],
+            [
+                1783282080000,
+                71
+            ],
+            [
+                1783282200000,
+                71
+            ],
+            [
+                1783282320000,
+                68
+            ],
+            [
+                1783282440000,
+                64
+            ],
+            [
+                1783282560000,
+                70
+            ],
+            [
+                1783282680000,
+                68
+            ],
+            [
+                1783282800000,
+                69
+            ],
+            [
+                1783282920000,
+                70
+            ],
+            [
+                1783283040000,
+                68
+            ],
+            [
+                1783283160000,
+                65
+            ],
+            [
+                1783283280000,
+                68
+            ],
+            [
+                1783283400000,
+                68
+            ],
+            [
+                1783283520000,
+                68
+            ],
+            [
+                1783283640000,
+                67
+            ],
+            [
+                1783283760000,
+                65
+            ],
+            [
+                1783283880000,
+                70
+            ],
+            [
+                1783284000000,
+                67
+            ],
+            [
+                1783284120000,
+                69
+            ],
+            [
+                1783284240000,
+                76
+            ],
+            [
+                1783284360000,
+                73
+            ],
+            [
+                1783284480000,
+                73
+            ],
+            [
+                1783284600000,
+                73
+            ],
+            [
+                1783284720000,
+                71
+            ],
+            [
+                1783284840000,
+                73
+            ],
+            [
+                1783284960000,
+                74
+            ],
+            [
+                1783285080000,
+                62
+            ],
+            [
+                1783285200000,
+                62
+            ],
+            [
+                1783285320000,
+                65
+            ],
+            [
+                1783285440000,
+                65
+            ],
+            [
+                1783285560000,
+                67
+            ],
+            [
+                1783285680000,
+                64
+            ],
+            [
+                1783285800000,
+                63
+            ],
+            [
+                1783285920000,
+                70
+            ],
+            [
+                1783286040000,
+                64
+            ],
+            [
+                1783286160000,
+                67
+            ],
+            [
+                1783286280000,
+                67
+            ],
+            [
+                1783286400000,
+                74
+            ],
+            [
+                1783286520000,
+                78
+            ],
+            [
+                1783286640000,
+                68
+            ],
+            [
+                1783286760000,
+                65
+            ],
+            [
+                1783286880000,
+                64
+            ],
+            [
+                1783287000000,
+                68
+            ],
+            [
+                1783287120000,
+                74
+            ],
+            [
+                1783287240000,
+                63
+            ],
+            [
+                1783287360000,
+                65
+            ],
+            [
+                1783287480000,
+                65
+            ],
+            [
+                1783287600000,
+                66
+            ],
+            [
+                1783287720000,
+                74
+            ],
+            [
+                1783287840000,
+                71
+            ],
+            [
+                1783287960000,
+                66
+            ],
+            [
+                1783288080000,
+                65
+            ],
+            [
+                1783288200000,
+                76
+            ],
+            [
+                1783288320000,
+                76
+            ],
+            [
+                1783288440000,
+                72
+            ],
+            [
+                1783288560000,
+                72
+            ],
+            [
+                1783288680000,
+                67
+            ]
+        ]
+    },
+    "activities": [
+        {
+            "activityId": 23484608679,
+            "activityName": "Vallensbæk Løb",
+            "startTimeLocal": "2026-07-05 08:56:28",
+            "startTimeGMT": "2026-07-05 06:56:28",
+            "activityType": {
+                "typeId": 1,
+                "typeKey": "running",
+                "parentTypeId": 17,
+                "isHidden": false,
+                "restricted": false,
+                "trimmable": true
+            },
+            "eventType": {
+                "typeId": 9,
+                "typeKey": "uncategorized",
+                "sortOrder": 10
+            },
+            "distance": 12618.7802734375,
+            "duration": 6248.14501953125,
+            "elapsedDuration": 6248.14501953125,
+            "movingDuration": 6151.356994628906,
+            "elevationGain": 65.41137811541557,
+            "elevationLoss": 64.035743445158,
+            "averageSpeed": 2.0199999809265137,
+            "maxSpeed": 2.882999897003174,
+            "startLatitude": 55.62332935631275,
+            "startLongitude": 12.374338181689382,
+            "hasPolyline": true,
+            "hasImages": false,
+            "ownerId": 147275445,
+            "ownerDisplayName": "055f60d6-87ee-4f60-b3f5-f6ed2a18e159",
+            "ownerFullName": "Kim Lungay",
+            "ownerProfileImageUrlSmall": "https://s3.amazonaws.com/garmin-connect-prod/profile_images/b2f46c07-ef04-4b11-85dd-327b393cc330-prth.png",
+            "ownerProfileImageUrlMedium": "https://s3.amazonaws.com/garmin-connect-prod/profile_images/b2f46c07-ef04-4b11-85dd-327b393cc330-prfr.png",
+            "ownerProfileImageUrlLarge": "https://s3.amazonaws.com/garmin-connect-prod/profile_images/b2f46c07-ef04-4b11-85dd-327b393cc330-prof.png",
+            "calories": 948.0,
+            "bmrCalories": 157.0,
+            "averageHR": 145.0,
+            "maxHR": 162.0,
+            "averageRunningCadenceInStepsPerMinute": 145.609375,
+            "maxRunningCadenceInStepsPerMinute": 233.0,
+            "steps": 15706,
+            "userRoles": [
+                "SCOPE_GOLF_API_READ",
+                "SCOPE_DI_OAUTH_2_DEVICE_REVOCATION_WRITE",
+                "SCOPE_DI_OAUTH_2_CREATE_DI_USER",
+                "SCOPE_ATP_READ",
+                "SCOPE_DIVE_API_WRITE",
+                "SCOPE_COMMUNITY_COURSE_ADMIN_READ",
+                "SCOPE_DIVE_API_READ",
+                "SCOPE_DT_ACTIVE_INTELLIGENCE_READ",
+                "SCOPE_DI_OAUTH_2_CLIENT_READ",
+                "SCOPE_CONNECT_WRITE",
+                "SCOPE_COMMUNITY_COURSE_WRITE",
+                "SCOPE_CONNECT_MCT_DAILY_LOG_READ",
+                "SCOPE_CONNECT_API_CREATE_UPDATE_USER",
+                "SCOPE_MESSAGE_GENERATION_READ",
+                "SCOPE_DI_OAUTH_2_CLIENT_REVOCATION_ADMIN",
+                "SCOPE_CONNECT_WEB_TEMPLATE_RENDER",
+                "SCOPE_ACTIVITY_DETECTION_READ",
+                "SCOPE_OMT_SUBSCRIPTION_ADMIN_READ",
+                "SCOPE_DI_OAUTH_2_MANAGED_STATUS_ADMIN_WRITE",
+                "SCOPE_CONNECT_NON_SOCIAL_SHARED_READ",
+                "SCOPE_CONNECT_READ",
+                "SCOPE_DI_OAUTH_2_PRERELEASE_PERMISSIONS_ADMIN_WRITE",
+                "SCOPE_DI_OAUTH_2_TOKEN_ADMIN",
+                "SCOPE_ATP_WRITE",
+                "ROLE_CONNECTUSER",
+                "ROLE_FITNESS_USER",
+                "ROLE_WELLNESS_USER",
+                "ROLE_OUTDOOR_USER",
+                "ROLE_GARMIN_USER"
+            ],
+            "privacy": {
+                "typeId": 2,
+                "typeKey": "private"
+            },
+            "userPro": false,
+            "hasVideo": false,
+            "timeZoneId": 124,
+            "beginTimestamp": 1783234588000,
+            "sportTypeId": 1,
+            "avgPower": 219.0,
+            "maxPower": 360.0,
+            "aerobicTrainingEffect": 3.200000047683716,
+            "anaerobicTrainingEffect": 0.0,
+            "normPower": 245.0,
+            "avgVerticalOscillation": 7.3699996948242195,
+            "avgGroundContactTime": 284.1000061035156,
+            "avgStrideLength": 79.72999877929688,
+            "vO2MaxValue": 47.0,
+            "avgVerticalRatio": 9.300000190734863,
+            "deviceId": 3630435047,
+            "minElevation": 0.0,
+            "maxElevation": 11.005088806152344,
+            "avgElevation": 4.801040051480524,
+            "maxDoubleCadence": 233.0,
+            "summarizedDiveInfo": {
+                "summarizedDiveGases": []
+            },
+            "maxVerticalSpeed": 0.276023268699646,
+            "manufacturer": "GARMIN",
+            "locationName": "Vallensbæk",
+            "lapCount": 13,
+            "endLatitude": 55.623585004359484,
+            "endLongitude": 12.374987360090017,
+            "waterEstimated": 624.0,
+            "trainingEffectLabel": "AEROBIC_BASE",
+            "activityTrainingLoad": 80.38967895507812,
+            "minActivityLapDuration": 307.48699951171875,
+            "aerobicTrainingEffectMessage": "IMPROVING_AEROBIC_BASE_8",
+            "anaerobicTrainingEffectMessage": "NO_ANAEROBIC_BENEFIT_0",
+            "splitSummaries": [
+                {
+                    "noOfSplits": 5,
+                    "totalAscent": 0.0,
+                    "duration": 76.0,
+                    "splitType": "RWD_STAND",
+                    "numClimbSends": 0,
+                    "maxElevationGain": 0.0,
+                    "averageElevationGain": 0.0,
+                    "maxDistance": 4,
+                    "maxDistanceWithPrecision": 4.489999771118164,
+                    "distance": 13.65999984741211,
+                    "averageSpeed": 0.18000000715255737,
+                    "maxSpeed": 0.0,
+                    "numFalls": 0,
+                    "elevationLoss": 0.0
+                },
+                {
+                    "noOfSplits": 1,
+                    "totalAscent": 88.0,
+                    "duration": 6248.14501953125,
+                    "splitType": "INTERVAL_ACTIVE",
+                    "numClimbSends": 0,
+                    "maxElevationGain": 88.0,
+                    "averageElevationGain": 29.0,
+                    "maxDistance": 12618,
+                    "maxDistanceWithPrecision": 12618.7998046875,
+                    "distance": 12618.7998046875,
+                    "averageSpeed": 2.0199999809265137,
+                    "maxSpeed": 2.882999897003174,
+                    "numFalls": 0,
+                    "elevationLoss": 103.0
+                },
+                {
+                    "noOfSplits": 25,
+                    "totalAscent": 67.0,
+                    "duration": 4563.14404296875,
+                    "splitType": "RWD_RUN",
+                    "numClimbSends": 0,
+                    "maxElevationGain": 12.0,
+                    "averageElevationGain": 3.0,
+                    "maxDistance": 1122,
+                    "maxDistanceWithPrecision": 1122.550048828125,
+                    "distance": 10320.4404296875,
+                    "averageSpeed": 2.26200008392334,
+                    "maxSpeed": 2.882999897003174,
+                    "numFalls": 0,
+                    "elevationLoss": 80.0
+                },
+                {
+                    "noOfSplits": 27,
+                    "totalAscent": 21.0,
+                    "duration": 1609.0,
+                    "splitType": "RWD_WALK",
+                    "numClimbSends": 0,
+                    "maxElevationGain": 3.0,
+                    "averageElevationGain": 1.0,
+                    "maxDistance": 163,
+                    "maxDistanceWithPrecision": 163.74000549316406,
+                    "distance": 2284.679931640625,
+                    "averageSpeed": 1.4199999570846558,
+                    "maxSpeed": 2.0810000896453857,
+                    "numFalls": 0,
+                    "elevationLoss": 24.0
+                }
+            ],
+            "hasSplits": true,
+            "hasIntensityIntervals": false,
+            "moderateIntensityMinutes": 42,
+            "vigorousIntensityMinutes": 61,
+            "differenceBodyBattery": -17,
+            "hasHeatMap": false,
+            "fastestSplit_1000": 431.4339904785156,
+            "fastestSplit_1609": 717.7429809570312,
+            "fastestSplit_5000": 2338.764892578125,
+            "fastestSplit_10000": 4890.02197265625,
+            "hrTimeInZone_1": 49.0,
+            "hrTimeInZone_2": 2117.295,
+            "hrTimeInZone_3": 4062.735,
+            "hrTimeInZone_4": 0.0,
+            "hrTimeInZone_5": 0.0,
+            "powerTimeInZone_1": 698.975,
+            "powerTimeInZone_2": 5.0,
+            "powerTimeInZone_3": 0.0,
+            "powerTimeInZone_4": 0.0,
+            "powerTimeInZone_5": 0.0,
+            "endTimeGMT": "2026-07-05 08:40:36",
+            "qualifyingDive": false,
+            "activityUUID": "6c2ea309-9009-4699-b636-9dde92bb105b",
+            "purposeful": false,
+            "favorite": false,
+            "pr": false,
+            "parent": false,
+            "decoDive": false,
+            "manualActivity": false,
+            "autoCalcCalories": false,
+            "elevationCorrected": true,
+            "atpActivity": false
+        }
+    ]
+}

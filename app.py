@@ -179,7 +179,7 @@ else:
                 template="plotly_white",
                 margin=dict(l=20, r=20, t=40, b=20),
                 height=400,
-                xaxis=dict(fixedrange=True, tickmode='linear'),  # <--- HER ER DEN TILFØJET
+                xaxis=dict(fixedrange=True),
                 yaxis=dict(fixedrange=True)
             )
             st.plotly_chart(fig_hr, use_container_width=True, config={"scrollZoom": False, "displayModeBar": False})
@@ -205,7 +205,7 @@ else:
                 template="plotly_white",
                 margin=dict(l=20, r=20, t=40, b=20),
                 height=400,
-                xaxis=dict(fixedrange=True, tickmode='linear'),  # <--- OG HER
+                xaxis=dict(fixedrange=True),
                 yaxis=dict(fixedrange=True, autorange="reversed")
             )
             

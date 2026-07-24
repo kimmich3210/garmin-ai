@@ -123,57 +123,6 @@ else:
     
     st.divider()
 
-    # --- SMÅ GRAFER FOR HVILEPULS & HRV (SIDSTE 14 DAGE) ---
-    st.subheader("📊 Restitution (Sidste 14 dage)")
-    
-    if health_history:
-        df_health = pd.DataFrame(health_history)
-        fourteen_days_ago = datetime.now() - timedelta(days=14)
-        df_health = df_health[df_health["DatoObj"] >= fourteen_days_ago].sort_values("DatoObj")
-        
-        if not df_health.empty:
-            col_g1, col_g2 = st.columns(2)
-            
-            with col_g1:
-                fig_rhr = px.line(
-                    df_health, x="Dato", y="Hvilepuls", 
-                    markers=True, title="Hvilepuls (Sidste 14 dage)",
-                    color_discrete_sequence=["#e377c2"],
-                    line_shape="spline",
-                    text="Hvilepuls"
-                )
-                fig_rhr.update_traces(texttemplate='%{y}', textposition="top center", line=dict(width=2.5), marker=dict(size=7))
-                fig_rhr.update_layout(
-                    template="plotly_white", 
-                    margin=dict(l=10, r=10, t=30, b=10), 
-                    height=280,
-                    xaxis=dict(fixedrange=True),
-                    yaxis=dict(fixedrange=True)
-                )
-                st.plotly_chart(fig_rhr, use_container_width=True, config={"scrollZoom": False, "displayModeBar": False})
-                
-            with col_g2:
-                fig_hrv = px.line(
-                    df_health, x="Dato", y="HRV", 
-                    markers=True, title="HRV Nat (Sidste 14 dage)",
-                    color_discrete_sequence=["#2ca02c"],
-                    line_shape="spline",
-                    text="HRV"
-                )
-                fig_hrv.update_traces(texttemplate='%{y}', textposition="top center", line=dict(width=2.5), marker=dict(size=7))
-                fig_hrv.update_layout(
-                    template="plotly_white", 
-                    margin=dict(l=10, r=10, t=30, b=10), 
-                    height=280,
-                    xaxis=dict(fixedrange=True),
-                    yaxis=dict(fixedrange=True)
-                )
-                st.plotly_chart(fig_hrv, use_container_width=True, config={"scrollZoom": False, "displayModeBar": False})
-        else:
-            st.info("Ingen historiske sundhedsdata fra de sidste 14 dage endnu.")
-
-    st.divider()
-
     col_titel, col_filter = st.columns([2, 1])
     with col_titel:
         st.subheader("📈 MAF Løbetræning")
@@ -200,6 +149,7 @@ else:
                 avg_hr = act.get("averageHR", 0)
                 distance = act.get("distance", 0) / 1000 
                 duration = act.get("duration", 0) / 60 
+                calories = act.get("calories", 0)
                 
                 pace_min_km = 0
                 pace_str = "0:00"
@@ -227,6 +177,8 @@ else:
                         "Gennemsnitspuls": avg_hr,
                         "Distancet (km)": round(distance, 2),
                         "Pace": pace_str,
+                        "Kalorier": calories,
+                        "Varighed (min)": round(duration, 1),
                         "_PaceSort": pace_sort
                     })
             
@@ -250,33 +202,50 @@ else:
             
             base_maf = 155
 
-            # --- ATLET-INTELLIGENCE / MAF FEEDBACK SEKTION ØVERST ---
-            st.subheader("🧠 Atlet-Intelligens: MAF-Feedback til Seneste Løb")
+            # --- 🧠 ATHLETE INTELLIGENCE: AVANCERET AI-FEEDBACK ØVERST ---
+            st.markdown("---")
+            st.markdown("### 🧠 Athlete Intelligence (MAF-Analyse)")
+            
             if len(df_filtered) >= 1:
                 latest_act = df_filtered.iloc[-1]
                 latest_hr = latest_act["Gennemsnitspuls"]
                 latest_date = latest_act["DatoStr"]
                 latest_pace = latest_act["Pace"]
+                latest_dist = latest_act["Distancet (km)"]
+                latest_cal = latest_act["Kalorier"]
+                latest_dur = latest_act["Varighed (min)"]
                 
                 start_pace = df_filtered.iloc[0]["_PaceSort"]
                 end_pace = latest_act["_PaceSort"]
-                start_hr = df_filtered.iloc[0]["Gennemsnitspuls"]
+
+                # VIS SENESTE TRÆNINGSDATA I EN FLOT BOKS / FIRKANT
+                st.info(f"""**📊 Seneste træningsdata ({latest_date}):**
+* **Distance:** {latest_dist} km
+* **Varighed:** {latest_dur} min
+* **Gennemsnitspuls:** {latest_hr} bpm
+* **Pace:** {latest_pace} min/km
+* **Kalorier:** {latest_cal} kcal""")
+
+                # Generer intelligente indsigter
+                ai_insights = []
                 
-                # MAF Loft Tjek
                 if latest_hr <= base_maf:
-                    st.success(f"**MAF-Loft (155 bpm):** Godkendt! Din seneste tur ({latest_date}) havde en gennemsnitspuls på **{latest_hr} bpm**, hvilket er under dit loft på {base_maf} bpm. Optimalt for fedtforbrænding og aerob base.")
+                    ai_insights.append(f"🟢 **Pulskontrol:** Din seneste tur over {latest_dist} km ramte en gennemsnitspuls på **{latest_hr} bpm**. Det er flot under dit MAF-loft på {base_maf} bpm, hvilket sikrer optimal stimulering af fedtforbrænding og opbygning af den aerobe base.")
                 else:
-                    st.warning(f"**MAF-Loft (155 bpm):** OBS! Din seneste tur ({latest_date}) lå på **{latest_hr} bpm**, hvilket er over dit maksimale loft på {base_maf} bpm.")
+                    over_bpm = latest_hr - base_maf
+                    ai_insights.append(f"⚠️ **Pulskontrol (Advarsel):** Din seneste tur lå på **{latest_hr} bpm**, hvilket er {over_bpm} bpm over dit MAF-loft ({base_maf} bpm).")
 
-                # Tempo / Pace Tjek siden start
                 if end_pace < start_pace:
-                    st.success(f"**Tempo-udvikling:** Hurtigere 🚀 (Din pace på seneste tur var {latest_pace} min/km, hvilket er stærkere i forhold til dine første ture siden MAF-starten den 3. juli).")
+                    ai_insights.append(f"🚀 **Tempo-fremgang:** Du løber hurtigere! Din pace på seneste tur var **{latest_pace} min/km**, hvor den startede på {df_filtered.iloc[0]['Pace']} min/km siden MAF-starten.")
                 elif end_pace > start_pace:
-                    st.warning(f"**Tempo-udvikling:** Langsommere 🐢 (Seneste pace: {latest_pace} min/km).")
+                    ai_insights.append(f"🐢 **Tempo-status:** Din seneste pace var {latest_pace} min/km (lidt langsommere end ved start for at holde pulsen nede).")
                 else:
-                    st.info(f"**Tempo-udvikling:** Stabilt omkring {latest_pace} min/km.")
+                    ai_insights.append(f"➡️ **Tempo-status:** Stabilt omkring {latest_pace} min/km.")
 
-            st.divider()
+                for insight in ai_insights:
+                    st.markdown(insight)
+            
+            st.markdown("---")
 
             # --- GRAF 1: GENNEMSNITSPULS (MAF) ---
             st.subheader("❤️ Gennemsnitspuls (MAF)")
@@ -313,18 +282,6 @@ else:
             )
             st.plotly_chart(fig_hr, use_container_width=True, config={"scrollZoom": False, "displayModeBar": False})
 
-            # SIMPEL PULS-FEEDBACK
-            if len(df_filtered) >= 2:
-                start_hr = df_filtered.iloc[0]["Gennemsnitspuls"]
-                end_hr = df_filtered.iloc[-1]["Gennemsnitspuls"]
-                
-                if end_hr < start_hr:
-                    st.success("📉 **Puls:** Faldende (Lavere gennemsnitspuls - Godt for den aerobe udvikling!)")
-                elif end_hr > start_hr:
-                    st.warning("📈 **Puls:** Stigende (Højere gennemsnitspuls)")
-                else:
-                    st.info("➡️ **Puls:** Stabil")
-
             # --- GRAF 2: PACE ---
             st.subheader("⚡ Pace (min/km)")
             fig_pace = px.line(
@@ -350,34 +307,6 @@ else:
                 yaxis=dict(fixedrange=True, autorange="reversed")
             )
             st.plotly_chart(fig_pace, use_container_width=True, config={"scrollZoom": False, "displayModeBar": False})
-
-            # SIMPEL PACE- OG LANGTIDSANALYSE (MAKS 3+ MÅNEDERS MAF-FREMGANG)
-            if len(df_filtered) >= 2:
-                start_date = df_filtered.iloc[0]["Dato"]
-                end_date = df_filtered.iloc[-1]["Dato"]
-                days_passed = (end_date - start_date).days
-                
-                start_pace = df_filtered.iloc[0]["_PaceSort"]
-                end_pace = df_filtered.iloc[-1]["_PaceSort"]
-                start_hr = df_filtered.iloc[0]["Gennemsnitspuls"]
-                end_hr = df_filtered.iloc[-1]["Gennemsnitspuls"]
-
-                if days_passed >= 75:
-                    if end_pace < start_pace and end_hr <= start_hr + 3:
-                        st.success(f"🏆 **Langtidstest (MAF-fremgang over {days_passed} dage):** Fantastisk! Du løber nu hurtigere ved samme eller lavere puls over de sidste måneder. Din aerobe base udvikler sig præcist som den skal.")
-                    elif end_pace < start_pace:
-                        st.success("🚀 **Tempo:** Hurtigere (Du løber stærkere pr. kilometer)")
-                    elif end_pace > start_pace:
-                        st.warning("🐢 **Tempo:** Langsommere")
-                    else:
-                        st.info("➡️ **Tempo:** Stabilt over perioden")
-                else:
-                    if end_pace < start_pace:
-                        st.success("🚀 **Tempo:** Hurtigere (Du løber stærkere pr. kilometer)")
-                    elif end_pace > start_pace:
-                        st.warning("🐢 **Tempo:** Langsommere")
-                    else:
-                        st.info("➡️ **Tempo:** Stabilt")
             
             st.subheader("📋 Aktivitetsdetaljer (Løb)")
             display_df = df_filtered.drop(columns=["Dato", "_PaceSort"]).rename(columns={"DatoStr": "Dato"})

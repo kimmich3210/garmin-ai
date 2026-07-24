@@ -14,12 +14,21 @@ if not json_files:
 else:
     health_history = []
     all_activities = []
+    latest_data = None
+    latest_date_str = ""
     
-    for file in sorted(json_files):
+    # Sorter filer for at finde den aller nyeste
+    sorted_files = sorted(json_files)
+    
+    for file in sorted_files:
         try:
             with open(file, "r", encoding="utf-8") as rf:
                 file_data = json.load(rf)
                 f_date_str = file_data.get("fetched_at", "")[:10]
+                
+                # Gem den nyeste fil til dagens analyse
+                latest_data = file_data
+                latest_date_str = f_date_str
                 
                 f_rhr = file_data.get("heart_rates", {}).get("restingHeartRate", None)
                 f_hrv = file_data.get("hrv", {}).get("hrvSummary", {}).get("lastNightAvg", None)
@@ -37,6 +46,64 @@ else:
                     all_activities.extend(acts)
         except Exception:
             pass
+
+    # --- TOP: DAGLIG AI / GARMIN ANALYSE OG ANBEFALING ---
+    st.subheader("💡 Dagens Trænings- og Restitutionsstatus")
+    
+    if latest_data:
+        # Uddrag data fra seneste synkronisering
+        rhr = latest_data.get("heart_rates", {}).get("restingHeartRate", "Ukendt")
+        hrv_dict = latest_data.get("hrv", {}).get("hrvSummary", {})
+        hrv_val = hrv_dict.get("lastNightAvg", "Ukendt")
+        
+        # Søvn (hvis det findes i data)
+        sleep_data = latest_data.get("sleep", {})
+        sleep_score = sleep_data.get("dailySleepDTO", {}).get("sleepScoreFeedback", "Ikke tilgængelig")
+        sleep_duration_seconds = sleep_data.get("dailySleepDTO", {}).get("sleepTimeSeconds", 0)
+        sleep_hours = round(sleep_duration_seconds / 3600, 1) if sleep_duration_seconds else "Ukendt"
+        
+        # Body Battery / Batteri (hvis det findes)
+        body_battery = latest_data.get("bodyBattery", [])
+        bb_charged = "Ukendt"
+        if body_battery and isinstance(body_battery, list):
+            bb_charged = body_battery[0].get("charged", "Ukendt")
+
+        # Vis metrikker i små bokse
+        col_m1, col_m2, col_m3, col_m4 = st.columns(4)
+        col_m1.metric("Hvilepuls", f"{rhr} bpm" if rhr != "Ukendt" else "Ikke m.t.")
+        col_m2.metric("Nat HRV", f"{hrv_val} ms" if hrv_val != "Ukendt" else "Ikke m.t.")
+        col_m3.metric("Søvnvarighed", f"{sleep_hours} timer" if sleep_hours != "Ukendt" else "Ikke m.t.")
+        col_m4.metric("Body Battery (Opladet)", f"{bb_charged}" if bb_charged != "Ukendt" else "Ikke m.t.")
+
+        # Generer smart tekst baseret på tallene
+        st.markdown("---")
+        advice_text = f"**Status for i dag ({latest_date_str}):**\n\n"
+        
+        # Simpel intelligent vurdering
+        is_good_to_go = True
+        reasons = []
+        
+        if isinstance(rhr, (int, float)) and rhr > 60:  # Eksempelgrænse, tilpas efter behov
+            is_good_to_go = False
+            reasons.append("din hvilepuls er lidt højere end normalt")
+        if isinstance(hrv_val, (int, float)) and hrv_val < 40: # Eksempelgrænse
+            is_good_to_go = False
+            reasons.append("din nat-HRV er lav, hvilket indikerer lavere restitution")
+        if isinstance(sleep_hours, (int, float)) and sleep_hours < 6.5:
+            is_good_to_go = False
+            reasons.append("du har sovet i kortere tid end anbefalet")
+
+        if is_good_to_go:
+            advice_text += "🟢 **Klar til træning!** Dine værdier (søvn, hvilepuls og HRV) ser fornuftige ud. Det er en rigtig god dag til at gennemføre din planlagte MAF-løbetræning med fuldt fokus på pulszonen."
+        else:
+            reason_str = ", og ".join(reasons)
+            advice_text += f"🟡 **Tag det roligt i dag:** Da {reason_str}, bør du lytte ekstra godt efter kroppen. Overvej om dagens træning skal skiftes ud med en rolig gåtur, restitution eller et lettere tempo, så du ikke overbelaster systemet."
+            
+        st.info(advice_text)
+    else:
+        st.warning("Kunne ikke indhente data til dagens analyse endnu.")
+
+    st.divider()
 
     # --- SMÅ GRAFER FOR HVILEPULS & HRV (SIDSTE 14 DAGE) ---
     st.subheader("📊 Restitution (Sidste 14 dage)")
@@ -127,7 +194,7 @@ else:
                         mins += 1
                         secs = 0
                     pace_str = f"{mins}:{secs:02d}"
-                    pace_sort = pace_min_km  # Bruges til at sortere grafen korrekt
+                    pace_sort = pace_min_km 
                     
                 if date_str:
                     try:

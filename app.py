@@ -45,7 +45,7 @@ else:
         except Exception:
             pass
 
-    # --- TOP: TRÆNINGSKLARHED OG SYGDOMS-STATUS (ENS SKRIFTSTØRRELSE) ---
+    # --- TOP: TRÆNINGSKLARHED OG SYGDOMS-STATUS (INKL. HVILEPULS) ---
     if latest_data:
         rhr = latest_data.get("heart_rates", {}).get("restingHeartRate", None)
         hrv_data = latest_data.get("hrv", {})
@@ -100,7 +100,6 @@ else:
         else:
             status_type = "rask"
 
-        # Brug to kolonner, hvor tekststørrelsen nu er helt ensartet med standard overskrifter og brødtekst
         col_c1, col_c2 = st.columns([1, 2])
         with col_c1:
             st.subheader("Træningsklarhed")
@@ -115,12 +114,12 @@ else:
             st.subheader("Helbredsstatus")
             if status_type == "syg":
                 rs_text = ", ".join(reasons) if reasons else "flere kritiske værdier"
-                st.error(f"**Syg / Kraftig belastning:** Dine data viser tegn på mistrivsel ({rs_text}). Hold fuldstændig pause.")
+                st.error(f"**Syg / Kraftig belastning:** Din hvilepuls ({rhr} bpm) og øvrige data viser tegn på mistrivsel ({rs_text}). Hold pause.")
             elif status_type == "paa_vej":
                 rs_text = ", ".join(reasons) if reasons else "afvigende målinger"
-                st.warning(f"**Muligvis på vej til at blive syg:** Kroppen er under pres ({rs_text}). Sæt tempoet ned.")
+                st.warning(f"**Muligvis på vej til at blive syg:** Kroppen er under pres (bl.a. hvilepuls på {rhr} bpm og {rs_text}). Sæt tempoet ned.")
             else:
-                st.success(f"**Rask og i balance:** Alle helbredsdata (puls, HRV, søvn, stress og batteri) viser normale, sunde værdier.")
+                st.success(f"**Rask og i balance:** Hvilepuls ({rhr} bpm) og helbredsdata viser normale, sunde værdier.")
     
     st.divider()
 
@@ -244,6 +243,8 @@ else:
             
             df_filtered = df_filtered.sort_values("Dato")
             
+            base_maf = 155
+
             # --- GRAF 1: GENNEMSNITSPULS (MAF) ---
             st.subheader("❤️ Gennemsnitspuls (MAF)")
             fig_hr = px.line(
@@ -258,7 +259,6 @@ else:
             )
             fig_hr.update_traces(texttemplate='%{y}', textposition="top center", line=dict(width=3), marker=dict(size=8))
             
-            base_maf = 155
             fig_hr.add_hline(
                 y=base_maf, 
                 line_dash="dash", 
@@ -279,6 +279,14 @@ else:
                 yaxis=dict(fixedrange=True)
             )
             st.plotly_chart(fig_hr, use_container_width=True, config={"scrollZoom": False, "displayModeBar": False})
+
+            # SMART FEEDBACK UNDER PULSGRAF
+            if not df_filtered.empty:
+                latest_hr = df_filtered.iloc[-1]["Gennemsnitspuls"]
+                if latest_hr <= base_maf:
+                    st.info(f"💡 **MAF Puls-Feedback:** Seneste tur havde en gennemsnitspuls på {latest_hr} bpm, hvilket ligger flot under din MAF-grænse på {base_maf} bpm. Du holder dig korrekt i zonen.")
+                else:
+                    st.warning(f"💡 **MAF Puls-Feedback:** Seneste tur havde en gennemsnitspuls på {latest_hr} bpm, hvilket er over din MAF-grænse ({base_maf} bpm). Sæt tempoet lidt ned på næste tur for at holde dig i zonen.")
 
             # --- GRAF 2: PACE ---
             st.subheader("⚡ Pace (min/km)")
@@ -306,6 +314,18 @@ else:
             )
             
             st.plotly_chart(fig_pace, use_container_width=True, config={"scrollZoom": False, "displayModeBar": False})
+
+            # SMART FEEDBACK UNDER PACEGRAF
+            if len(df_filtered) >= 2:
+                latest_pace_str = df_filtered.iloc[-1]["Pace"]
+                prev_pace_str = df_filtered.iloc[-2]["Pace"]
+                latest_sort = df_filtered.iloc[-1]["_PaceSort"]
+                prev_sort = df_filtered.iloc[-2]["_PaceSort"]
+                
+                if latest_sort < prev_sort:
+                    st.success(f"💡 **MAF Udviklings-Feedback:** Din seneste pace er forbedret til {latest_pace_str} min/km (mod {prev_pace_str} sidst) ved lav puls. Det er et klassisk tegn på at din aerobe base og effektivitet forbedres i MAF-zonen!")
+                else:
+                    st.info(f"💡 **MAF Udviklings-Feedback:** Din seneste pace var {latest_pace_str} min/km. Husk at pace kan variere afhængigt af terræn og vind i MAF-træning – fokus er udelukkende på pulsen.")
             
             st.subheader("📋 Aktivitetsdetaljer (Løb)")
             display_df = df_filtered.drop(columns=["Dato", "_PaceSort"]).rename(columns={"DatoStr": "Dato"})

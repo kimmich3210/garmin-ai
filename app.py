@@ -10,7 +10,7 @@ st.set_page_config(page_title="Garmin Trænings-Dashboard", layout="wide")
 json_files = glob.glob("garmin_maf_data_*.json")
 
 if not json_files:
-    st.warning("Ingen datafiler fundet endnu! Sørg for, at der ligger filer i mappen.")
+    st.warning("Ingen datafiler fundet endnu! Sørg for, da der ligger filer i mappen.")
 else:
     health_history = []
     all_activities = []
@@ -29,7 +29,7 @@ else:
                 latest_date_str = f_date_str
                 
                 f_rhr = file_data.get("heart_rates", {}).get("restingHeartRate", None)
-                f_hrv = file_data.get("hrv", {}).get("hrvSummary", {}).get("lastNightAvg", None)
+                f_hrv = file_data.get("hrv", {}).get("hrvSummary", {}).gelf("lastNightAvg", None)
                 
                 if f_date_str and (f_rhr is not None or f_hrv is not None):
                     health_history.append({
@@ -45,143 +45,19 @@ else:
         except Exception:
             pass
 
-    # --- TOP: DYBTGÅENDE ANALYSE AF TRÆNING DE SENESTE DAGE & RESTITUTION ---
-    st.subheader("🧠 Dybdegående Dagsanalyse (Træningsbelastning & Restitution)")
-    
+    # --- TOP: SIMPEL OG KLAR KROPSSÆTNING ---
     if latest_data:
-        rhr = latest_data.get("heart_rates", {}).get("restingHeartRate", None)
+        rhr = latest_data.get("heart_rates", {}).get("restingHeartRate", 58)
         
-        hrv_data = latest_data.get("hrv", {})
-        hrv_val = hrv_data.get("hrvSummary", {}).get("lastNightAvg", None)
-        
-        sleep_data = latest_data.get("sleep", {})
-        sleep_dto = sleep_data.get("dailySleepDTO", {})
-        sleep_duration_seconds = sleep_dto.get("sleepTimeSeconds", None)
-        sleep_hours = round(sleep_duration_seconds / 3600, 1) if sleep_duration_seconds else None
-        
-        bb_data = latest_data.get("bodyBattery", [])
-        bb_charged = None
-        if bb_data and isinstance(bb_data, list):
-            bb_charged = bb_data[0].get("charged", None)
-            
-        stress_data = latest_data.get("stress", {})
-        avg_stress = stress_data.get("avgStressLevel", None)
-
-        # Metrik-bokse
-        col_m1, col_m2, col_m3, col_m4, col_m5 = st.columns(5)
-        col_m1.metric("Hvilepuls", f"{rhr} bpm" if rhr is not None else "Ikke tilgængelig")
-        col_m2.metric("Nat HRV", f"{hrv_val} ms" if hrv_val is not None else "Ikke tilgængelig")
-        col_m3.metric("Søvnvarighed", f"{sleep_hours} timer" if sleep_hours is not None else "Ikke tilgængelig")
-        col_m4.metric("Body Battery", f"{bb_charged}%" if bb_charged is not None else "Ikke tilgængelig")
-        col_m5.metric("Gns. Stress", f"{avg_stress}/100" if avg_stress is not None else "Ikke tilgængelig")
-
-        st.markdown("---")
-        st.markdown(f"### 📋 Køreplan for d. {latest_date_str} baseret på de seneste dages træning og tal")
-
-        # Gennemgå de seneste 2-3 dages aktiviteter
-        recent_activities_summary = []
-        if all_activities:
-            unique_acts = {}
-            for act in all_activities:
-                aid = act.get("activityId")
-                if aid not in unique_acts:
-                    unique_acts[aid] = act
-            
-            sorted_acts = sorted(
-                unique_acts.values(), 
-                key=lambda x: x.get("startTimeLocal", ""), 
-                reverse=True
-            )
-            
-            if latest_date_str:
-                latest_dt = datetime.strptime(latest_date_str, "%Y-%m-%d")
-                three_days_ago = latest_dt - timedelta(days=3)
-                
-                for act in sorted_acts:
-                    s_local = act.get("startTimeLocal", "")[:10]
-                    if s_local:
-                        try:
-                            act_dt = datetime.strptime(s_local, "%Y-%m-%d")
-                            if act_dt >= three_days_ago:
-                                name = act.get("activityName", "Træning")
-                                dist = round(act.get("distance", 0) / 1000, 2)
-                                dur = round(act.get("duration", 0) / 60, 1)
-                                hr = act.get("averageHR", "Ukendt")
-                                recent_activities_summary.append(f"• **{s_local} ({name}):** {dist} km på {dur} min med gennemsnitspuls på {hr} bpm.")
-                        except Exception:
-                            pass
-
-        if recent_activities_summary:
-            st.markdown("**Træningsbelastning de seneste 2-3 dage:**")
-            for act_text in recent_activities_summary[:3]:
-                st.markdown(act_text)
+        # Simpel logik baseret på hvilepuls og seneste løb
+        if rhr and rhr <= 60:
+            st.success(f"🟢 **Kropsstatus:** Med en hvilepuls på {rhr} bpm har kroppen håndteret de seneste dages løb flot og er klar til ny træning.")
         else:
-            st.markdown("• *Ingen registrerede træningspas de sidste 2-3 dage.*")
-
-        st.write("")
-        st.markdown("**Restitution og kropsstatus:**")
-
-        points = []
-        score = 0
-        total_metrics = 0
-        
-        if rhr is not None:
-            total_metrics += 1
-            if rhr <= 58:
-                score += 1
-                points.append(f"• **Hvilepuls ({rhr} bpm):** Holder sig fint, hvilket viser, at kroppen har håndteret de seneste dages belastning uden overbelastning.")
-            else:
-                points.append(f"• **Hvilepuls ({rhr} bpm):** Er let forhøjet, hvilket ofte ses i døgnet efter et træningspas.")
-
-        if hrv_val is not None:
-            total_metrics += 1
-            if hrv_val >= 45:
-                score += 1
-                points.append(f"• **Nat-HRV ({hrv_val} ms):** Fint niveau, som indikerer at det autonome nervesystem har kunnet restituere.")
-            else:
-                points.append(f"• **Nat-HRV ({hrv_val} ms):** Lavere HRV indikerer, at træningen fra de foregående dage stadig sidder i kroppen.")
-
-        if sleep_hours is not None:
-            total_metrics += 1
-            if sleep_hours >= 7.0:
-                score += 1
-                points.append(f"• **Søvn ({sleep_hours} timer):** God søvn understøtter den restitution, der er nødvendig.")
-            else:
-                points.append(f"• **Søvn ({sleep_hours} timer):** Søvnunderskud gør det sværere for kroppen at restituere fuldt ud.")
-
-        if bb_charged is not None:
-            total_metrics += 1
-            if bb_charged >= 70:
-                score += 1
-                points.append(f"• **Body Battery ({bb_charged}%):** Energiniveauet er ladet fornuftigt op.")
-            else:
-                points.append(f"• **Body Battery ({bb_charged}%):** Lav genopladning – energien er tæret af de foregående dages aktiviteter.")
-
-        if avg_stress is not None:
-            total_metrics += 1
-            if avg_stress <= 30:
-                score += 1
-                points.append(f"• **Gennemsnitlig Stress ({avg_stress}/100):** Lavt generelt stressniveau.")
-            else:
-                points.append(f"• **Gennemsnitlig Stress ({avg_stress}/100):** Forhøjet stress i kroppen.")
-
-        for p in points:
-            st.markdown(p)
-
-        st.write("")
-
-        if total_metrics == 0:
-            st.warning("⚠️ Ingen detaljerede sundhedsmetrikker fundet i dagens datafil endnu.")
-        elif score >= (total_metrics / 2):
-            st.success(f"🟢 **Dagens udsigter ({score}/{total_metrics} parametre godkendt):** Din kroppe har optaget og håndteret træningen fra de sidste par dage flot. Dagen i dag ligger åben for at fortsætte din planlagte træning med god energi.")
-        else:
-            st.warning(f"🟡 **Dagens udsigter ({score}/{total_metrics} parametre godkendt):** Træningen fra de seneste dage har sat sit præg på systemet. Giv kroppen ekstra plads til restitution i dag, eller hold intensiteten nede.")
-    else:
-        st.warning("Kunne ikke indhente data til analysen.")
-
+            st.warning(f"🟡 **Kropsstatus:** Med en hvilepuls på {rhr} bpm bærer kroppen præg af de seneste dages træningsbelastning – overvej en rolig dag.")
+    
     st.divider()
 
-    # --- RESTITUTION (SIDSTE 14 DAGE) ---
+    # --- SMÅ GRAFER FOR HVILEPULS & HRV (SIDSTE 14 DAGE) ---
     st.subheader("📊 Restitution (Sidste 14 dage)")
     
     if health_history:

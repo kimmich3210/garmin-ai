@@ -285,16 +285,15 @@ else:
             )
             st.plotly_chart(fig_hr, use_container_width=True, config={"scrollZoom": False, "displayModeBar": False})
 
-            # SIMPEL PULS-FEEDBACK
+            # SIMPEL PULS-FEEDBACK (SAMMENLIGNER START SIDEN 3. JULI MED SENESTE)
             if len(df_filtered) >= 2:
-                mid_idx = len(df_filtered) // 2
-                first_hr = df_filtered.iloc[:mid_idx]["Gennemsnitspuls"].mean()
-                last_hr = df_filtered.iloc[mid_idx]["Gennemsnitspuls"].mean() if len(df_filtered) > 2 else df_filtered.iloc[-1]["Gennemsnitspuls"]
+                start_hr = df_filtered.iloc[0]["Gennemsnitspuls"]
+                end_hr = df_filtered.iloc[-1]["Gennemsnitspuls"]
                 
-                if last_hr < first_hr:
-                    st.success("📉 **Puls:** Faldende (Godt)")
-                elif last_hr > first_hr:
-                    st.warning("📈 **Puls:** Stigende")
+                if end_hr < start_hr:
+                    st.success("📉 **Puls:** Faldende (Lavere gennemsnitspuls - Godt for den aerobe udvikling!)")
+                elif end_hr > start_hr:
+                    st.warning("📈 **Puls:** Stigende (Højere gennemsnitspuls)")
                 else:
                     st.info("➡️ **Puls:** Stabil")
 
@@ -324,7 +323,7 @@ else:
             )
             st.plotly_chart(fig_pace, use_container_width=True, config={"scrollZoom": False, "displayModeBar": False})
 
-            # SIMPEL PACE-FEEDBACK (HURTIGERE / LANGSOMMERE)
+            # SIMPEL PACE-FEEDBACK
             if len(df_filtered) >= 2:
                 start_pace = df_filtered.iloc[0]["_PaceSort"]
                 end_pace = df_filtered.iloc[-1]["_PaceSort"]

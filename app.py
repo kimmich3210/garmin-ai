@@ -285,7 +285,7 @@ else:
             )
             st.plotly_chart(fig_hr, use_container_width=True, config={"scrollZoom": False, "displayModeBar": False})
 
-            # SIMPEL PULS-FEEDBACK (STIGENDE / FALDENDE)
+            # SIMPEL PULS-FEEDBACK
             if len(df_filtered) >= 2:
                 mid_idx = len(df_filtered) // 2
                 first_hr = df_filtered.iloc[:mid_idx]["Gennemsnitspuls"].mean()
@@ -322,21 +322,19 @@ else:
                 xaxis=dict(fixedrange=True),
                 yaxis=dict(fixedrange=True, autorange="reversed")
             )
-            
             st.plotly_chart(fig_pace, use_container_width=True, config={"scrollZoom": False, "displayModeBar": False})
 
-            # SIMPEL PACE-FEEDBACK (STIGENDE / FALDENDE)
+            # SIMPEL PACE-FEEDBACK (HURTIGERE / LANGSOMMERE)
             if len(df_filtered) >= 2:
                 start_pace = df_filtered.iloc[0]["_PaceSort"]
                 end_pace = df_filtered.iloc[-1]["_PaceSort"]
                 
-                # Bemærk: I min/km betyder lavere tal hurtigere pace (faldende graf-linje mod bunden)
                 if end_pace < start_pace:
-                    st.success("📈 **Pace:** Stigende i tempo (Faldende min/km - Du er blevet hurtigere!)")
+                    st.success("🚀 **Tempo:** Hurtigere (Du løber stærkere pr. kilometer)")
                 elif end_pace > start_pace:
-                    st.warning("📉 **Pace:** Faldende i tempo (Stigende min/km)")
+                    st.warning("🐢 **Tempo:** Langsommere")
                 else:
-                    st.info("➡️ **Pace:** Stabil")
+                    st.info("➡️ **Tempo:** Stabilt")
             
             st.subheader("📋 Aktivitetsdetaljer (Løb)")
             display_df = df_filtered.drop(columns=["Dato", "_PaceSort"]).rename(columns={"DatoStr": "Dato"})

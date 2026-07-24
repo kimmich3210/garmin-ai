@@ -75,7 +75,7 @@ else:
         if avg_stress is not None:
             scores.append(max(0, min(100, 100 - avg_stress)))
 
-        readiness_pct = int(sum(scores) / len(scores)) if scores else 75
+        readiness_pct = int(sum(scores) / len(scores)) if scores else 50
 
         status_type = "rask"
         reasons = []
@@ -280,13 +280,17 @@ else:
             )
             st.plotly_chart(fig_hr, use_container_width=True, config={"scrollZoom": False, "displayModeBar": False})
 
-            # SMART FEEDBACK UNDER PULSGRAF
-            if not df_filtered.empty:
+            # UDVIKLINGS-FEEDBACK FOR PULSGRAF (SAMMENLIGNER SIDSTE MED TIDLIGERE)
+            if len(df_filtered) >= 2:
                 latest_hr = df_filtered.iloc[-1]["Gennemsnitspuls"]
-                if latest_hr <= base_maf:
-                    st.info(f"💡 **MAF Puls-Feedback:** Seneste tur havde en gennemsnitspuls på {latest_hr} bpm, hvilket ligger flot under din MAF-grænse på {base_maf} bpm. Du holder dig korrekt i zonen.")
+                avg_earlier_hr = df_filtered.iloc[:-1]["Gennemsnitspuls"].mean()
+                
+                if latest_hr < avg_earlier_hr:
+                    st.success(f"📈 **Udviklingsanalyse (Puls):** Du har **forbedret dig!** Din seneste gennemsnitspuls ({latest_hr} bpm) er lavere end dit tidligere gennemsnit ({int(avg_earlier_hr)} bpm), hvilket viser fremgang i din aerobe effektivitet.")
+                elif latest_hr > avg_earlier_hr + 3:
+                    st.warning(f"📉 **Udviklingsanalyse (Puls):** Din puls er steget til {latest_hr} bpm (tidligere gennemsnit: {int(avg_earlier_hr)} bpm). Det kan tyde på træthed, højere intensitet eller at formen er midlertidigt påvirket.")
                 else:
-                    st.warning(f"💡 **MAF Puls-Feedback:** Seneste tur havde en gennemsnitspuls på {latest_hr} bpm, hvilket er over din MAF-grænse ({base_maf} bpm). Sæt tempoet lidt ned på næste tur for at holde dig i zonen.")
+                    st.info(f"➡️ **Udviklingsanalyse (Puls):** Din puls ligger stabilt omkring {latest_hr} bpm i forhold til dine tidligere ture.")
 
             # --- GRAF 2: PACE ---
             st.subheader("⚡ Pace (min/km)")
@@ -315,17 +319,19 @@ else:
             
             st.plotly_chart(fig_pace, use_container_width=True, config={"scrollZoom": False, "displayModeBar": False})
 
-            # SMART FEEDBACK UNDER PACEGRAF
+            # UDVIKLINGS-FEEDBACK FOR PACEGRAF (SAMMENLIGNER SIDSTE MED TIDLIGERE)
             if len(df_filtered) >= 2:
-                latest_pace_str = df_filtered.iloc[-1]["Pace"]
-                prev_pace_str = df_filtered.iloc[-2]["Pace"]
                 latest_sort = df_filtered.iloc[-1]["_PaceSort"]
-                prev_sort = df_filtered.iloc[-2]["_PaceSort"]
+                latest_pace_str = df_filtered.iloc[-1]["Pace"]
+                avg_earlier_sort = df_filtered.iloc[:-1]["_PaceSort"].mean()
                 
-                if latest_sort < prev_sort:
-                    st.success(f"💡 **MAF Udviklings-Feedback:** Din seneste pace er forbedret til {latest_pace_str} min/km (mod {prev_pace_str} sidst) ved lav puls. Det er et klassisk tegn på at din aerobe base og effektivitet forbedres i MAF-zonen!")
+                # I min/km betyder LAVERET tal HURTIGERE pace
+                if latest_sort < avg_earlier_sort:
+                    st.success(f"📈 **Udviklingsanalyse (Pace):** Du har **forbedret dig!** Din pace er steget til {latest_pace_str} min/km, hvilket er hurtigere end dit tidligere snit – et klokkeklart tegn på fremgang i din MAF-form.")
+                elif latest_sort > avg_earlier_sort + 0.3:
+                    st.warning(f"📉 **Udviklingsanalyse (Pace):** Din pace er faldet til {latest_pace_str} min/km (langsommere end normalt). Det kan skyldes modvind, terræn eller at kroppen har krævet mere ro.")
                 else:
-                    st.info(f"💡 **MAF Udviklings-Feedback:** Din seneste pace var {latest_pace_str} min/km. Husk at pace kan variere afhængigt af terræn og vind i MAF-træning – fokus er udelukkende på pulsen.")
+                    st.info(f"➡️ **Udviklingsanalyse (Pace):** Din pace er stabil på {latest_pace_str} min/km i forhold til dine tidligere løb.")
             
             st.subheader("📋 Aktivitetsdetaljer (Løb)")
             display_df = df_filtered.drop(columns=["Dato", "_PaceSort"]).rename(columns={"DatoStr": "Dato"})

@@ -1,1 +1,6 @@
 garminconnect>=0.2.8
+streamlit
+pandas
+plotly
+garminconnect
+requests

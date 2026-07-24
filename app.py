@@ -250,6 +250,34 @@ else:
             
             base_maf = 155
 
+            # --- ATLET-INTELLIGENCE / MAF FEEDBACK SEKTION ØVERST ---
+            st.subheader("🧠 Atlet-Intelligens: MAF-Feedback til Seneste Løb")
+            if len(df_filtered) >= 1:
+                latest_act = df_filtered.iloc[-1]
+                latest_hr = latest_act["Gennemsnitspuls"]
+                latest_date = latest_act["DatoStr"]
+                latest_pace = latest_act["Pace"]
+                
+                start_pace = df_filtered.iloc[0]["_PaceSort"]
+                end_pace = latest_act["_PaceSort"]
+                start_hr = df_filtered.iloc[0]["Gennemsnitspuls"]
+                
+                # MAF Loft Tjek
+                if latest_hr <= base_maf:
+                    st.success(f"**MAF-Loft (155 bpm):** Godkendt! Din seneste tur ({latest_date}) havde en gennemsnitspuls på **{latest_hr} bpm**, hvilket er under dit loft på {base_maf} bpm. Optimalt for fedtforbrænding og aerob base.")
+                else:
+                    st.warning(f"**MAF-Loft (155 bpm):** OBS! Din seneste tur ({latest_date}) lå på **{latest_hr} bpm**, hvilket er over dit maksimale loft på {base_maf} bpm.")
+
+                # Tempo / Pace Tjek siden start
+                if end_pace < start_pace:
+                    st.success(f"**Tempo-udvikling:** Hurtigere 🚀 (Din pace på seneste tur var {latest_pace} min/km, hvilket er stærkere i forhold til dine første ture siden MAF-starten den 3. juli).")
+                elif end_pace > start_pace:
+                    st.warning(f"**Tempo-udvikling:** Langsommere 🐢 (Seneste pace: {latest_pace} min/km).")
+                else:
+                    st.info(f"**Tempo-udvikling:** Stabilt omkring {latest_pace} min/km.")
+
+            st.divider()
+
             # --- GRAF 1: GENNEMSNITSPULS (MAF) ---
             st.subheader("❤️ Gennemsnitspuls (MAF)")
             fig_hr = px.line(
@@ -279,7 +307,7 @@ else:
                 hovermode="x unified",
                 template="plotly_white",
                 margin=dict(l=20, r=20, t=40, b=20),
-                    height=400,
+                height=400,
                 xaxis=dict(fixedrange=True),
                 yaxis=dict(fixedrange=True)
             )
@@ -334,7 +362,6 @@ else:
                 start_hr = df_filtered.iloc[0]["Gennemsnitspuls"]
                 end_hr = df_filtered.iloc[-1]["Gennemsnitspuls"]
 
-                # Hvis der er gået over ca. 75 dage (2.5 - 3+ måneder) laver den den ægte MAF-langtidstest
                 if days_passed >= 75:
                     if end_pace < start_pace and end_hr <= start_hr + 3:
                         st.success(f"🏆 **Langtidstest (MAF-fremgang over {days_passed} dage):** Fantastisk! Du løber nu hurtigere ved samme eller lavere puls over de sidste måneder. Din aerobe base udvikler sig præcist som den skal.")
@@ -345,7 +372,6 @@ else:
                     else:
                         st.info("➡️ **Tempo:** Stabilt over perioden")
                 else:
-                    # Standard kortere visning
                     if end_pace < start_pace:
                         st.success("🚀 **Tempo:** Hurtigere (Du løber stærkere pr. kilometer)")
                     elif end_pace > start_pace:

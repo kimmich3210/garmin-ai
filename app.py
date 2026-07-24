@@ -117,10 +117,61 @@ else:
                 st.error(f"**Syg / Kraftig belastning:** Din hvilepuls ({rhr} bpm) og øvrige data viser tegn på mistrivsel ({rs_text}). Hold pause.")
             elif status_type == "paa_vej":
                 rs_text = ", ".join(reasons) if reasons else "afvigende målinger"
-                st.warning(f"**Muligvis på vej til at blive syg:** Kroppen er under pres (bl.a. hvilepuls på {rhr} bpm og {rs_text}). Sæt tempoet ned.")
+                st.warning(f"**Muligvis på vej til at blive syg:** Kroppen er under pres (bl.a. hvilepuls on {rhr} bpm og {rs_text}). Sæt tempoet ned.")
             else:
                 st.success(f"**Rask og i balance:** Hvilepuls ({rhr} bpm) og helbredsdata viser normale, sunde værdier.")
     
+    st.divider()
+
+    # --- SMÅ GRAFER FOR HVILEPULS & HRV (SIDSTE 14 DAGE) ---
+    st.subheader("📊 Restitution (Sidste 14 dage)")
+    
+    if health_history:
+        df_health = pd.DataFrame(health_history)
+        fourteen_days_ago = datetime.now() - timedelta(days=14)
+        df_health = df_health[df_health["DatoObj"] >= fourteen_days_ago].sort_values("DatoObj")
+        
+        if not df_health.empty:
+            col_g1, col_g2 = st.columns(2)
+            
+            with col_g1:
+                fig_rhr = px.line(
+                    df_health, x="Dato", y="Hvilepuls", 
+                    markers=True, title="Hvilepuls (Sidste 14 dage)",
+                    color_discrete_sequence=["#e377c2"],
+                    line_shape="spline",
+                    text="Hvilepuls"
+                )
+                fig_rhr.update_traces(texttemplate='%{y}', textposition="top center", line=dict(width=2.5), marker=dict(size=7))
+                fig_rhr.update_layout(
+                    template="plotly_white", 
+                    margin=dict(l=10, r=10, t=30, b=10), 
+                    height=280,
+                    xaxis=dict(fixedrange=True),
+                    yaxis=dict(fixedrange=True)
+                )
+                st.plotly_chart(fig_rhr, use_container_width=True, config={"scrollZoom": False, "displayModeBar": False})
+                
+            with col_g2:
+                fig_hrv = px.line(
+                    df_health, x="Dato", y="HRV", 
+                    markers=True, title="HRV Nat (Sidste 14 dage)",
+                    color_discrete_sequence=["#2ca02c"],
+                    line_shape="spline",
+                    text="HRV"
+                )
+                fig_hrv.update_traces(texttemplate='%{y}', textposition="top center", line=dict(width=2.5), marker=dict(size=7))
+                fig_hrv.update_layout(
+                    template="plotly_white", 
+                    margin=dict(l=10, r=10, t=30, b=10), 
+                    height=280,
+                    xaxis=dict(fixedrange=True),
+                    yaxis=dict(fixedrange=True)
+                )
+                st.plotly_chart(fig_hrv, use_container_width=True, config={"scrollZoom": False, "displayModeBar": False})
+        else:
+            st.info("Ingen historiske sundhedsdata fra de sidste 14 dage endnu.")
+
     st.divider()
 
     col_titel, col_filter = st.columns([2, 1])

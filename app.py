@@ -202,7 +202,6 @@ else:
                 duration_min = act.get("duration", 0) / 60 
                 calories = act.get("calories", 0)
                 
-                # Formatér varighed til timer:minutter:sekunder (f.eks. 1:55:53)
                 total_seconds = int(act.get("duration", 0))
                 hours = total_seconds // 3600
                 minutes = (total_seconds % 3600) // 60
@@ -263,7 +262,7 @@ else:
             
             base_maf = 155
 
-            # --- 🧠 ATHLETE INTELLIGENCE: GARMIN-STIL KORT ØVERST ---
+            # --- 🧠 SENESTE LØB (AUTOMATISK OPAD MED GARMIN-STIL) ---
             if len(df_filtered) >= 1:
                 latest_act = df_filtered.iloc[-1]
                 latest_hr = latest_act["Gennemsnitspuls"]
@@ -277,22 +276,22 @@ else:
                 start_pace = df_filtered.iloc[0]["_PaceSort"]
                 end_pace = latest_act["_PaceSort"]
 
-                st.markdown(f"### 🧠 Athlete Intelligence: {latest_name} ({latest_date})")
+                st.markdown(f"### Seneste Løb: {latest_name} ({latest_date})")
                 
-                # Garmin-inspireret layout i bokse
+                # Garmin-inspirerede metrikker i to kolonner
                 col_m1, col_m2 = st.columns(2)
                 with col_m1:
                     st.metric(label="Distance", value=f"{latest_dist} km")
                     st.metric(label="Gennemsnitlig puls", value=f"{latest_hr} bpm")
                     st.metric(label="Samlet tid", value=latest_time)
                 with col_m2:
-                    st.empty() # tom kolonne for at skabe 2x2 grid følelse
+                    st.empty()
                     st.metric(label="Gns. tempo", value=f"{latest_pace} /km")
                     st.metric(label="Kalorier i alt", value=f"{latest_cal}")
 
                 st.markdown("---")
 
-                # Generer intelligente indsigter baseret på MAF-loftet
+                # AI Feedback / Atlet Intelligence baseret på MAF-loftet
                 ai_insights = []
                 if latest_hr <= base_maf:
                     ai_insights.append(f"🟢 **MAF-Loft (155 bpm):** Godkendt! Din puls lå på **{latest_hr} bpm**, hvilket er under dit loft på {base_maf} bpm. Optimalt for fedtforbrænding og aerob base.")

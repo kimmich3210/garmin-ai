@@ -10,7 +10,7 @@ st.set_page_config(page_title="Garmin Trænings-Dashboard", layout="wide")
 json_files = glob.glob("garmin_maf_data_*.json")
 
 if not json_files:
-    st.warning("Ingen datafiler fundet endnu! Sørg for, da der ligger filer i mappen.")
+    st.warning("Ingen datafiler fundet endnu! Sørg for, at der ligger filer i mappen.")
 else:
     health_history = []
     all_activities = []
@@ -29,7 +29,7 @@ else:
                 latest_date_str = f_date_str
                 
                 f_rhr = file_data.get("heart_rates", {}).get("restingHeartRate", None)
-                f_hrv = file_data.get("hrv", {}).get("hrvSummary", {}).gelf("lastNightAvg", None)
+                f_hrv = file_data.get("hrv", {}).get("hrvSummary", {}).get("lastNightAvg", None)
                 
                 if f_date_str and (f_rhr is not None or f_hrv is not None):
                     health_history.append({
@@ -49,7 +49,6 @@ else:
     if latest_data:
         rhr = latest_data.get("heart_rates", {}).get("restingHeartRate", 58)
         
-        # Simpel logik baseret på hvilepuls og seneste løb
         if rhr and rhr <= 60:
             st.success(f"🟢 **Kropsstatus:** Med en hvilepuls på {rhr} bpm har kroppen håndteret de seneste dages løb flot og er klar til ny træning.")
         else:

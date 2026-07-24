@@ -251,7 +251,7 @@ else:
             base_maf = 155
 
             # --- GRAF 1: GENNEMSNITSPULS (MAF) ---
-            st.subheader("❤️ Gennemsnitspuls (MAF) - Siden MAF-start (3. juli)")
+            st.subheader("❤️ Gennemsnitspuls (MAF)")
             fig_hr = px.line(
                 df_filtered, 
                 x="DatoStr", 
@@ -285,21 +285,21 @@ else:
             )
             st.plotly_chart(fig_hr, use_container_width=True, config={"scrollZoom": False, "displayModeBar": False})
 
-            # SAMMENLIGNING SIDEN 3. JULI (PULS)
+            # DYNAMISK PULS-FEEDBACK BASERET PÅ DEN VALGTE GRAF / PERIODE
             if len(df_filtered) >= 2:
                 mid_idx = len(df_filtered) // 2
                 first_half_hr = df_filtered.iloc[:mid_idx]["Gennemsnitspuls"].mean()
                 second_half_hr = df_filtered.iloc[mid_idx]["Gennemsnitspuls"].mean() if len(df_filtered) > 2 else df_filtered.iloc[-1]["Gennemsnitspuls"]
                 
                 if second_half_hr < first_half_hr:
-                    st.success(f"📈 **Udviklingsanalyse siden 3. juli (Puls):** Din gennemsnitspuls er faldet (fra ca. {int(first_half_hr)} bpm til {int(second_half_hr)} bpm ved tilsvarende intensitet). Det viser at din aerobe base styrkes siden opstarten!")
+                    st.success(f"📈 **Puls-udvikling i valgte periode:** Din gennemsnitspuls er faldet (fra {int(first_half_hr)} til {int(second_half_hr)} bpm). Det betyder, at din aerobe effektivitet forbedres i denne periode!")
                 elif second_half_hr > first_half_hr + 2:
-                    st.warning(f"📉 **Udviklingsanalyse siden 3. juli (Puls):** Din gennemsnitspuls er steget (fra {int(first_half_hr)} bpm til {int(second_half_hr)} bpm). Vær opmærksom på at holde dig under MAF-grænsen.")
+                    st.warning(f"📉 **Puls-udvikling i valgte periode:** Din gennemsnitspuls er steget (fra {int(first_half_hr)} til {int(second_half_hr)} bpm). Du arbejder hårdere i denne periode – hold øje med MAF-grænsen.")
                 else:
-                    st.info(f"➡️ **Udviklingsanalyse siden 3. juli (Puls):** Din gennemsnitspuls har holdt et stabilt snit omkring {int(first_half_hr)}–{int(second_half_hr)} bpm siden starten.")
+                    st.info(f"➡️ **Puls-udvikling i valgte periode:** Din gennemsnitspuls er stabil omkring {int(first_half_hr)}–{int(second_half_hr)} bpm.")
 
             # --- GRAF 2: PACE ---
-            st.subheader("⚡ Pace (min/km) - Siden MAF-start (3. juli)")
+            st.subheader("⚡ Pace (min/km)")
             fig_pace = px.line(
                 df_filtered, 
                 x="DatoStr", 
@@ -325,7 +325,7 @@ else:
             
             st.plotly_chart(fig_pace, use_container_width=True, config={"scrollZoom": False, "displayModeBar": False})
 
-            # SAMMENLIGNING SIDEN 3. JULI (PACE)
+            # DYNAMISK PACE-FEEDBACK BASERET PÅ DEN VALGTE GRAF / PERIODE
             if len(df_filtered) >= 2:
                 start_pace = df_filtered.iloc[0]["_PaceSort"]
                 end_pace = df_filtered.iloc[-1]["_PaceSort"]
@@ -334,16 +334,16 @@ else:
                 
                 if end_pace < start_pace:
                     diff_sec = int((start_pace - end_pace) * 60)
-                    st.success(f"🚀 **Udviklingsanalyse siden 3. juli (Pace):** Du er **blevet hurtigere** siden du startede din MAF-træning den 3. juli! Din pace er forbedret fra {start_pace_str} min/km til {end_pace_str} min/km (ca. {diff_sec} sek/km hurtigere ved samme lave puls). Imponerende fremgang!")
+                    st.success(f"🚀 **Pace-udvikling i valgte periode:** Du er **blevet hurtigere**! Din pace har ændret sig fra {start_pace_str} til {end_pace_str} min/km (ca. {diff_sec} sek/km hurtigere) i denne periode.")
                 elif end_pace > start_pace + 0.1:
-                    st.warning(f"🐢 **Udviklingsanalyse siden 3. juli (Pace):** Din pace er steget fra {start_pace_str} til {end_pace_str} min/km siden startdatoen. Det kan skyldes bevidst opbremsning for at tjekke pulsen eller ekstra træthed.")
+                    st.warning(f"🐢 **Pace-udvikling i valgte periode:** Din pace er langsommere i denne periode (fra {start_pace_str} til {end_pace_str} min/km). Du har kørt et mere kontrolleret eller roligt tempo.")
                 else:
-                    st.info(f"➡️ **Udviklingsanalyse siden 3. juli (Pace):** Din pace har ligget stabilt omkring {end_pace_str} min/km siden starten den 3. juli.")
+                    st.info(f"➡️ **Pace-udvikling i valgte periode:** Din pace har holdt et stabilt niveau omkring {end_pace_str} min/km.")
             
-            st.subheader("📋 Aktivitetsdetaljer (Løb - Siden 3. juli)")
+            st.subheader("📋 Aktivitetsdetaljer (Løb)")
             display_df = df_filtered.drop(columns=["Dato", "_PaceSort"]).rename(columns={"DatoStr": "Dato"})
             st.dataframe(display_df, use_container_width=True)
         else:
-            st.info("Ingen løbeaktiviteter fundet siden den 3. juli.")
+            st.info("Ingen løbeaktiviteter fundet for den valgte periode.")
     else:
         st.info("Ingen aktivitetsdata fundet i filerne.")

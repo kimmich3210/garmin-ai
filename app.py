@@ -45,16 +45,14 @@ else:
         except Exception:
             pass
 
-    # --- TOP: FULDT UD DYBTGÅENDE ANALYSE AF ALLE DATA (SØVN, HRV, BB, STRESS & TRÆNING) ---
+    # --- TOP: PROCENTBASERET TRÆNINGSKLARHED (1-100%) ---
     if latest_data:
         rhr = latest_data.get("heart_rates", {}).get("restingHeartRate", None)
-        
         hrv_data = latest_data.get("hrv", {})
         hrv_val = hrv_data.get("hrvSummary", {}).get("lastNightAvg", None)
         
         sleep_data = latest_data.get("sleep", {})
-        sleep_dto = sleep_data.get("dailySleepDTO", {})
-        sleep_duration_seconds = sleep_dto.get("sleepTimeSeconds", None)
+        sleep_duration_seconds = sleep_data.get("dailySleepDTO", {}).get("sleepTimeSeconds", None)
         sleep_hours = round(sleep_duration_seconds / 3600, 1) if sleep_duration_seconds else None
         
         bb_data = latest_data.get("bodyBattery", [])
@@ -65,60 +63,43 @@ else:
         stress_data = latest_data.get("stress", {})
         avg_stress = stress_data.get("avgStressLevel", None)
 
-        # Analyser og tæl op på tværs af alle tilgængelige data
-        score = 0
-        total_checked = 0
-        details = []
-
-        if rhr is not None:
-            total_checked += 1
-            if rhr <= 60:
-                score += 1
-                details.append(f"hvilepuls ({rhr} bpm) er fin")
-            else:
-                details.append(f"hvilepuls ({rhr} bpm) er forhøjet")
-
-        if hrv_val is not None:
-            total_checked += 1
-            if hrv_val >= 40:
-                score += 1
-                details.append(f"nat-HRV ({hrv_val} ms) er god")
-            else:
-                details.append(f"nat-HRV ({hrv_val} ms) er lav")
-
-        if sleep_hours is not None:
-            total_checked += 1
-            if sleep_hours >= 7.0:
-                score += 1
-                details.append(f"søvn ({sleep_hours}t) er tilstrækkelig")
-            else:
-                details.append(f"søvn ({sleep_hours}t) er for kort")
-
-        if bb_charged is not None:
-            total_checked += 1
-            if bb_charged >= 65:
-                score += 1
-                details.append(f"Body Battery ({bb_charged}%) er ladet op")
-            else:
-                details.append(f"Body Battery ({bb_charged}%) er lavt")
-
-        if avg_stress is not None:
-            total_checked += 1
-            if avg_stress <= 35:
-                score += 1
-                details.append(f"stressniveau ({avg_stress}) er lavt")
-            else:
-                details.append(f"stressniveau ({avg_stress}) er højt")
-
-        # Byg den samlede konklusion baseret på rigtige data
-        detail_text = ", ".join(details) if details else "baseret på tilgængelige målinger"
+        # Beregn en samlet klarhedsprocent (1-100%) baseret på tilgængelige data
+        scores = []
         
-        if total_checked > 0 and score >= (total_checked / 2):
-            st.success(f"🟢 **Kropsstatus (Analyse af alle data):** Kroppen er i god gennemsnitlig balance ({detail_text}). Træningsbelastningen fra de seneste dage er håndteret fint, og du er klar til dagens program.")
-        elif total_checked > 0:
-            st.warning(f"🟡 **Kropsstatus (Analyse af alle data):** Flere parametre viser belastning ({detail_text}). Tag det roligt i dag og lyt til kroppens signaler.")
+        if rhr is not None:
+            # Antager optimal hvilepuls er omkring 50-60
+            rhr_score = max(0, min(100, 100 - (rhr - 50) * 2.5))
+            scores.append(rhr_score)
+            
+        if hrv_val is not None:
+            # Antager god HRV er 50+ ms
+            hrv_score = max(0, min(100, (hrv_val / 60) * 100))
+            scores.append(hrv_score)
+            
+        if sleep_hours is not None:
+            # Antager 8 timer er 100%
+            sleep_score = max(0, min(100, (sleep_hours / 8.0) * 100))
+            scores.append(sleep_score)
+            
+        if bb_charged is not None:
+            scores.append(bb_charged)
+            
+        if avg_stress is not None:
+            # Lav stress (f.eks. 20) giver høj score, høj stress (80) giver lav score
+            stress_score = max(0, min(100, 100 - avg_stress))
+            scores.append(stress_score)
+
+        if scores:
+            readiness_pct = int(sum(scores) / len(scores))
         else:
-            st.info("ℹ️ **Kropsstatus:** Afventer fyldestgørende sundhedsdata i filen.")
+            readiness_pct = 75  # Standardværdi hvis alt mangler
+
+        if readiness_pct >= 75:
+            st.success(f"🟢 **Træningsklarhed: {readiness_pct}%** – Kroppen er optimalt genopladet og klar til træning.")
+        elif readiness_pct >= 50:
+            st.warning(f"🟡 **Træningsklarhed: {readiness_pct}%** – Moderat restitution. Lyt til kroppen undervejs.")
+        else:
+            st.error(f"🔴 **Træningsklarhed: {readiness_pct}%** – Lav restitution. Overvej en hviledag eller roligt tempo.")
     
     st.divider()
 

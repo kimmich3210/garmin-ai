@@ -45,7 +45,7 @@ else:
         except Exception:
             pass
 
-    # --- TOP: PROCENTBASERET TRÆNINGSKLARHED (1-100%) ---
+    # --- TOP: TRÆNINGSKLARHED OG FULD HELBREDBASERET STATUS (RASK / PÅ VEJ AT BLIVE SYG / SYG) ---
     if latest_data:
         rhr = latest_data.get("heart_rates", {}).get("restingHeartRate", None)
         hrv_data = latest_data.get("hrv", {})
@@ -63,43 +63,66 @@ else:
         stress_data = latest_data.get("stress", {})
         avg_stress = stress_data.get("avgStressLevel", None)
 
-        # Beregn en samlet klarhedsprocent (1-100%) baseret på tilgængelige data
+        # 1. Beregn træningsklarhed (1-100%) baseret på alle tilgængelige data
         scores = []
-        
         if rhr is not None:
-            # Antager optimal hvilepuls er omkring 50-60
-            rhr_score = max(0, min(100, 100 - (rhr - 50) * 2.5))
-            scores.append(rhr_score)
-            
+            scores.append(max(0, min(100, 100 - (rhr - 50) * 2.5)))
         if hrv_val is not None:
-            # Antager god HRV er 50+ ms
-            hrv_score = max(0, min(100, (hrv_val / 60) * 100))
-            scores.append(hrv_score)
-            
+            scores.append(max(0, min(100, (hrv_val / 60) * 100)))
         if sleep_hours is not None:
-            # Antager 8 timer er 100%
-            sleep_score = max(0, min(100, (sleep_hours / 8.0) * 100))
-            scores.append(sleep_score)
-            
+            scores.append(max(0, min(100, (sleep_hours / 8.0) * 100)))
         if bb_charged is not None:
             scores.append(bb_charged)
-            
         if avg_stress is not None:
-            # Lav stress (f.eks. 20) giver høj score, høj stress (80) giver lav score
-            stress_score = max(0, min(100, 100 - avg_stress))
-            scores.append(stress_score)
+            scores.append(max(0, min(100, 100 - avg_stress)))
 
-        if scores:
-            readiness_pct = int(sum(scores) / len(scores))
-        else:
-            readiness_pct = 75  # Standardværdi hvis alt mangler
+        readiness_pct = int(sum(scores) / len(scores)) if scores else 75
 
-        if readiness_pct >= 75:
-            st.success(f"🟢 **Træningsklarhed: {readiness_pct}%** – Kroppen er optimalt genopladet og klar til træning.")
-        elif readiness_pct >= 50:
-            st.warning(f"🟡 **Træningsklarhed: {readiness_pct}%** – Moderat restitution. Lyt til kroppen undervejs.")
+        # 2. Helbredsstatus: Vurder om brugeren er rask, på vej til at blive syg eller syg baseret på alle data
+        status_type = "rask"
+        reasons = []
+
+        # Tjek for sygdomstegn (f.eks. høj hvilepuls, lav HRV, tømt Body Battery eller høj stress)
+        warning_indicators = 0
+        if rhr is not None and rhr > 62:
+            warning_indicators += 1
+            reasons.append(f"forhøjet hvilepuls ({rhr} bpm)")
+        if hrv_val is not None and hrv_val < 35:
+            warning_indicators += 1
+            reasons.append(f"lav nat-HRV ({hrv_val} ms)")
+        if bb_charged is not None and bb_charged < 40:
+            warning_indicators += 1
+            reasons.append(f"lav Body Battery opladning ({bb_charged}%)")
+        if avg_stress is not None and avg_stress > 40:
+            warning_indicators += 1
+            reasons.append(f"højt stressniveau ({avg_stress})")
+
+        if warning_indicators >= 3 or readiness_pct < 40:
+            status_type = "syg"
+        elif warning_indicators >= 1 or readiness_pct < 65:
+            status_type = "paa_vej"
         else:
-            st.error(f"🔴 **Træningsklarhed: {readiness_pct}%** – Lav restitution. Overvej en hviledag eller roligt tempo.")
+            status_type = "rask"
+
+        # Vis resultatet øverst i to kolonner
+        col_c1, col_c2 = st.columns([1, 2])
+        with col_c1:
+            if readiness_pct >= 75:
+                st.success(f"### Træningsklarhed\n# {readiness_pct}%")
+            elif readiness_pct >= 50:
+                st.warning(f"### Træningsklarhed\n# {readiness_pct}%")
+            else:
+                st.error(f"### Træningsklarhed\n# {readiness_pct}%")
+                
+        with col_c2:
+            if status_type == "syg":
+                rs_text = ", ".join(reasons) if reasons else "flere kritiske værdier"
+                st.error(f"🔴 **Helbredsstatus: Syg / Kraftig belastning**\nDine data viser markante tegn på mistrivsel eller sygdom ({rs_text}). Hold fuldstændig pause.")
+            elif status_type == "paa_vej":
+                rs_text = ", ".join(reasons) if reasons else "afvigende målinger"
+                st.warning(f"🟡 **Helbredsstatus: Muligvis på vej til at blive syg**\nData indikerer at kroppen er under pres ({rs_text}). Sæt tempoet ned og lyt til kroppen.")
+            else:
+                st.success(f"🟢 **Helbredsstatus: Rask og i balance**\nAlle dine helbredsdata (puls, HRV, søvn, stress og batteri) viser normale, sunde værdier.")
     
     st.divider()
 

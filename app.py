@@ -117,7 +117,7 @@ else:
                 st.error(f"**Syg / Kraftig belastning:** Din hvilepuls ({rhr} bpm) og øvrige data viser tegn på mistrivsel ({rs_text}). Hold pause.")
             elif status_type == "paa_vej":
                 rs_text = ", ".join(reasons) if reasons else "afvigende målinger"
-                st.warning(f"**Muligvis på vej til at blive syg:** Kroppen er under pres (bl.a. hvilepuls on {rhr} bpm og {rs_text}). Sæt tempoet ned.")
+                st.warning(f"**Muligvis på vej til at blive syg:** Kroppen er under pres (bl.a. hvilepuls på {rhr} bpm og {rs_text}). Sæt tempoet ned.")
             else:
                 st.success(f"**Rask og i balance:** Hvilepuls ({rhr} bpm) og helbredsdata viser normale, sunde værdier.")
     
@@ -199,14 +199,24 @@ else:
                 date_str = act.get("startTimeLocal", "")[:10]
                 avg_hr = act.get("averageHR", 0)
                 distance = act.get("distance", 0) / 1000 
-                duration = act.get("duration", 0) / 60 
+                duration_min = act.get("duration", 0) / 60 
                 calories = act.get("calories", 0)
+                
+                # Formatér varighed til timer:minutter:sekunder (f.eks. 1:55:53)
+                total_seconds = int(act.get("duration", 0))
+                hours = total_seconds // 3600
+                minutes = (total_seconds % 3600) // 60
+                seconds = total_seconds % 60
+                if hours > 0:
+                    duration_str = f"{hours}:{minutes:02d}:{seconds:02d}"
+                else:
+                    duration_str = f"{minutes}:{seconds:02d}"
                 
                 pace_min_km = 0
                 pace_str = "0:00"
                 pace_sort = 0
-                if distance > 0 and duration > 0:
-                    pace_min_km = duration / distance
+                if distance > 0 and duration_min > 0:
+                    pace_min_km = duration_min / distance
                     mins = int(pace_min_km)
                     secs = int(round((pace_min_km - mins) * 60))
                     if secs == 60:
@@ -229,7 +239,7 @@ else:
                         "Distancet (km)": round(distance, 2),
                         "Pace": pace_str,
                         "Kalorier": calories,
-                        "Varighed (min)": round(duration, 1),
+                        "Samlet tid": duration_str,
                         "_PaceSort": pace_sort
                     })
             
@@ -253,45 +263,49 @@ else:
             
             base_maf = 155
 
-            # --- 🧠 ATHLETE INTELLIGENCE: AVANCERET AI-FEEDBACK ØVERST ---
-            st.markdown("---")
-            st.markdown("### 🧠 Athlete Intelligence (MAF-Analyse)")
-            
+            # --- 🧠 ATHLETE INTELLIGENCE: GARMIN-STIL KORT ØVERST ---
             if len(df_filtered) >= 1:
                 latest_act = df_filtered.iloc[-1]
                 latest_hr = latest_act["Gennemsnitspuls"]
+                latest_name = latest_act["Aktivitet"]
                 latest_date = latest_act["DatoStr"]
                 latest_pace = latest_act["Pace"]
                 latest_dist = latest_act["Distancet (km)"]
                 latest_cal = latest_act["Kalorier"]
-                latest_dur = latest_act["Varighed (min)"]
+                latest_time = latest_act["Samlet tid"]
                 
                 start_pace = df_filtered.iloc[0]["_PaceSort"]
                 end_pace = latest_act["_PaceSort"]
 
-                # VIS SENESTE TRÆNINGSDATA I EN FLOT BOKS / FIRKANT
-                st.info(f"""**📊 Seneste træningsdata ({latest_date}):**
-* **Distance:** {latest_dist} km
-* **Varighed:** {latest_dur} min
-* **Gennemsnitspuls:** {latest_hr} bpm
-* **Pace:** {latest_pace} min/km
-* **Kalorier:** {latest_cal} kcal""")
-
-                # Generer intelligente indsigter
-                ai_insights = []
+                st.markdown(f"### 🧠 Athlete Intelligence: {latest_name} ({latest_date})")
                 
+                # Garmin-inspireret layout i bokse
+                col_m1, col_m2 = st.columns(2)
+                with col_m1:
+                    st.metric(label="Distance", value=f"{latest_dist} km")
+                    st.metric(label="Gennemsnitlig puls", value=f"{latest_hr} bpm")
+                    st.metric(label="Samlet tid", value=latest_time)
+                with col_m2:
+                    st.empty() # tom kolonne for at skabe 2x2 grid følelse
+                    st.metric(label="Gns. tempo", value=f"{latest_pace} /km")
+                    st.metric(label="Kalorier i alt", value=f"{latest_cal}")
+
+                st.markdown("---")
+
+                # Generer intelligente indsigter baseret på MAF-loftet
+                ai_insights = []
                 if latest_hr <= base_maf:
-                    ai_insights.append(f"🟢 **Pulskontrol:** Din seneste tur over {latest_dist} km ramte en gennemsnitspuls på **{latest_hr} bpm**. Det er flot under dit MAF-loft på {base_maf} bpm, hvilket sikrer optimal stimulering af fedtforbrænding og opbygning af den aerobe base.")
+                    ai_insights.append(f"🟢 **MAF-Loft (155 bpm):** Godkendt! Din puls lå på **{latest_hr} bpm**, hvilket er under dit loft på {base_maf} bpm. Optimalt for fedtforbrænding og aerob base.")
                 else:
                     over_bpm = latest_hr - base_maf
-                    ai_insights.append(f"⚠️ **Pulskontrol (Advarsel):** Din seneste tur lå på **{latest_hr} bpm**, hvilket er {over_bpm} bpm over dit MAF-loft ({base_maf} bpm).")
+                    ai_insights.append(f"⚠️ **MAF-Loft (155 bpm):** OBS! Din puls lå på **{latest_hr} bpm** ({over_bpm} bpm over dit loft).")
 
                 if end_pace < start_pace:
-                    ai_insights.append(f"🚀 **Tempo-fremgang:** Du løber hurtigere! Din pace på seneste tur var **{latest_pace} min/km**, hvor den startede på {df_filtered.iloc[0]['Pace']} min/km siden MAF-starten.")
+                    ai_insights.append(f"🚀 **Tempo-udvikling:** Du løber hurtigere! Din pace er forbedret til **{latest_pace} min/km** siden start.")
                 elif end_pace > start_pace:
-                    ai_insights.append(f"🐢 **Tempo-status:** Din seneste pace var {latest_pace} min/km (lidt langsommere end ved start for at holde pulsen nede).")
+                    ai_insights.append(f"🐢 **Tempo-udvikling:** Langsommere pace på **{latest_pace} min/km** for at beskytte pulszonen.")
                 else:
-                    ai_insights.append(f"➡️ **Tempo-status:** Stabilt omkring {latest_pace} min/km.")
+                    ai_insights.append(f"➡️ **Tempo-udvikling:** Stabilt omkring **{latest_pace} min/km**.")
 
                 for insight in ai_insights:
                     st.markdown(insight)
